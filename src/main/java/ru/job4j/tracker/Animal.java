@@ -5,6 +5,7 @@ public class Animal {
         super();
         System.out.println("Animal");
     }
+
     public Animal(String name) {
     }
 
