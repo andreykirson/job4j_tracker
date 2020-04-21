@@ -11,5 +11,4 @@ public class JSONReport extends TextReport {
                 "\n" +
                 "}";
     }
-
 }
