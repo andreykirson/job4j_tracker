@@ -48,27 +48,17 @@ public class Shop {
             }
         }
 
-     Shop.delete(products, 2);    // Демонстрация работы метода удаления по индексу
+     Shop.delete(products, 4);    // Демонстрация работы метода удаления по индексу
 
 
     }
 
     private static Product[] delete(Product[] products, int index) {
         products[index] = null;
-        for (int i = index; i < products.length + 1; i++) {
-            products[i] = products[i++];
+        for (int i = index; i < products.length - 1; i++) {
+            products[i] = products[i + 1];
         }
-
-        for (int i = 0; i < products.length; i++) {
-            Product product = products[i];
-            //проверяем, что объект не равен null. тк у нас массив не заполнен целиком.
-            if (product != null) {
-                System.out.println(product.getName());
-            } else {
-                System.out.println("null");
-            }
-        }
-
+        products[products.length-1] = null;
         return products;
 
     }
