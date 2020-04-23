@@ -7,8 +7,9 @@ public class Programmer extends Engineer {
 
     int computer;
 
-    public String code() {
-
+    public String code(String programm) {
+        ;
+        return programm;
     }
 
 }
