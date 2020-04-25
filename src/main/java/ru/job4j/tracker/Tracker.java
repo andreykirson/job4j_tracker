@@ -1,6 +1,7 @@
 package ru.job4j.tracker;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -62,17 +63,31 @@ public class Tracker {
         return rsl;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tracker tracker = (Tracker) o;
+        return ids == tracker.ids &&
+                Arrays.equals(items, tracker.items);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(ids);
+        result = 31 * result + Arrays.hashCode(items);
+        return result;
+    }
+
     public Item[] findAll(){
         Item[] itemsWithoutNull = new Item[items.length];
-        int size = 0;
-        for (int index = 0; index < items.length; index++) {
+        for (int index = 0; index < position; index++) {
             Item item = items[index];
             if (item != null) {
-                itemsWithoutNull[size] = item;
-                size++;
+                itemsWithoutNull[index] = item;
             }
         }
-        itemsWithoutNull = Arrays.copyOf(itemsWithoutNull, size);
+        itemsWithoutNull = Arrays.copyOf(itemsWithoutNull, position);
         return itemsWithoutNull;
     }
 }

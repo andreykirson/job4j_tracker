@@ -37,6 +37,4 @@ public class TrackerTest {
         assertThat(result, is(tracker.findAll()));
     }
 
-
-
 }
