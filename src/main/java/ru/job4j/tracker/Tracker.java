@@ -97,23 +97,28 @@ public class Tracker {
         return rsl;
     }
 
-    public Item[] replace(String id, Item repItem){
-       // 1. Найти индекс ячейки по id.
+    public boolean replace(String id, Item repItem){
         int index = indexOf(id);
-       // 2. Проставить id с item. При замене нужно сохранять старый id.
+        boolean rsl = index != -1;
        repItem.setId(id);
-       // 3. Записать в ячейку с найденным индекс объект item. Это входящий параметр.
-        items[index] = repItem;
-        return items;
+        if (rsl) {
+            items[index] = repItem;
+        }
+        return rsl;
     }
 
-    public void delete(String id) {
+    public boolean delete(String id) {
         int index = indexOf(id);
+        boolean rsl = index != -1;
         int startPos = index + 1;
         int size = position - index;
         int distPos = index;
         items[position - 1] = null;
         position--;
-        System.arraycopy(items, startPos, items, distPos, size);
+        if (rsl) {
+            System.arraycopy(items, startPos, items, distPos, size);
+        }
+        return rsl;
     }
 }
+
