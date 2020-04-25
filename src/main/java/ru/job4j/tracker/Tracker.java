@@ -30,15 +30,10 @@ public class Tracker {
     }
 
     public Item findById(String id) {
-        Item rsl = null;
-        for (int index = 0; index < items.length; index++) {
-            Item item = items[index];
-            if (item.getId().equals(id)) {
-                rsl = item;
-                break;
-            }
-        }
-        return rsl;
+        // Находим индекс
+        int index = indexOf(id);
+        // Если индекс найден возвращаем item, иначе null
+        return index != -1 ? items[index] : null;
     }
 
     /**
@@ -89,5 +84,26 @@ public class Tracker {
         }
         itemsWithoutNull = Arrays.copyOf(itemsWithoutNull, position);
         return itemsWithoutNull;
+    }
+
+    private int indexOf(String id) {
+        int rsl = -1;
+        for (int index = 0; index < position; index++) {
+            if (items[index].getId().equals(id)) {
+                rsl = index;
+                break;
+            }
+        }
+        return rsl;
+    }
+
+    public Item[] replace(String id, Item repItem){
+       // 1. Найти индекс ячейки по id.
+        int index = indexOf(id);
+       // 2. Проставить id с item. При замене нужно сохранять старый id.
+       repItem.setId(id);
+       // 3. Записать в ячейку с найденным индекс объект item. Это входящий параметр.
+        items[index] = repItem;
+        return items;
     }
 }
