@@ -106,4 +106,14 @@ public class Tracker {
         items[index] = repItem;
         return items;
     }
+
+    public void delete(String id) {
+        int index = indexOf(id);
+        int startPos = index + 1;
+        int size = position - index;
+        int distPos = index;
+        items[position - 1] = null;
+        position--;
+        System.arraycopy(items, startPos, items, distPos, size);
+    }
 }
