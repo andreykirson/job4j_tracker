@@ -4,6 +4,7 @@ import org.junit.Test;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.IsNull.nullValue;
+import static org.junit.Assert.*;
 
 public class TrackerTest {
     @Test
@@ -78,10 +79,10 @@ public class TrackerTest {
         Tracker tracker = new Tracker();
         Item item = new Item("new item");
         tracker.add(item);
-        String[] answers = {null};
-        StartUI.deteleItem(new StubInput(answers), tracker);
+        String[] answers = {item.getId()};
+        StartUI.deleteItem(new StubInput(answers), tracker);
         Item deleted = tracker.findById(item.getId());
-        assertThat(deleted, is(nullValue()));
+        assertNull(deleted);
     }
 
 }
