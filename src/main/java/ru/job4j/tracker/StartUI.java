@@ -32,7 +32,7 @@ public class StartUI {
         }
     }
 
-    public static void deteleItem(Input input, Tracker tracker) {
+    public static void deleteItem(Input input, Tracker tracker) {
         System.out.println("==== Delete item ====");
         String id = input.askStr("Input id of item:");
         if(tracker.delete(id)) {
@@ -50,10 +50,7 @@ public class StartUI {
             this.showMenu();
             int select = Integer.valueOf(input.askStr("Select: "));
             if (select == 0) {
-                System.out.println("=== Create a new Item ====");
-                String name = input.askStr("Enter name: ");
-                Item item = new Item(name);
-                tracker.add(item);
+                StartUI.createItem(input, tracker);
             } else if (select == 1) {
                 System.out.println("=== Show all Items ====");
                 for (int i = 0; i < tracker.findAll().length; i++) {
@@ -61,25 +58,9 @@ public class StartUI {
                 }
             }
              else if (select == 2) {
-                System.out.println("==== Edit item ====");
-                String id = input.askStr("Input id of item:");
-                String name = input.askStr("Input the of item to edit name item:");
-                Item repItem = new Item(name);
-                if (tracker.replace(id, repItem)) {
-                    System.out.println("==== The item is edited ====");
-                } else {
-                    System.out.println("==== The item by id" + id + "does not exist ====");
-                };
-
+                StartUI.replaceItem(input, tracker);
             } else if (select == 3) {
-                System.out.println("==== Delete item ====");
-                String id = input.askStr("Input id of item:");
-                if(tracker.delete(id)) {
-                    System.out.println("==== The item by id " + id + "is deleted ===");
-                } else {
-                    System.out.println("==== The item by id " + id + "does not exist ===");
-                }
-
+                StartUI.deleteItem(input, tracker);
             } else if (select == 4) {
                 System.out.println("==== Find item by Id ====");
                 String id = input.askStr("Input id of item:");
