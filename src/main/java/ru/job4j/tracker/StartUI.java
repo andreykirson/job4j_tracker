@@ -83,11 +83,13 @@ public class StartUI {
             } else if (select == 4) {
                 System.out.println("==== Find item by Id ====");
                 String id = input.askStr("Input id of item:");
-                System.out.println(tracker.findById(id).getId() + " " + tracker.findById(id).getName());
+                Item findItem = tracker.findById(id);
+                System.out.println(findItem.getId() + " " + findItem.getName());
             }  else if (select == 5) {
                 System.out.println("==== Find items by name ====");
                 String name = input.askStr("Input the name of items");
-                System.out.println(tracker.findByName(name).getId() + " " + tracker.findByName(name).getName());
+                Item findItem = tracker.findByName(name);
+                System.out.println(findItem.getId() + " " + findItem.getName());
              }
              else if (select == 6) {
                 run = false;
