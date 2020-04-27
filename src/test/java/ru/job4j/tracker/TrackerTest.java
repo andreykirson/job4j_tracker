@@ -35,7 +35,7 @@ public class TrackerTest {
         tracker.add(item_1);
         tracker.add(item_2);
         result = tracker.findAll();
-        assertThat(result, is(tracker.findAll()));
+        assertThat(result[0].getName(), is(item_1.getName()));
     }
 
     @Test
