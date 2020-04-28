@@ -45,12 +45,11 @@ public class Tracker {
         return String.valueOf(rm.nextLong() + System.currentTimeMillis());
     }
 
-    public Item findByName(String key){
-        Item rsl = null;
+    public Item [] findByName(String key){
+        Item[] rsl = new Item[1];
         for (int index = 0; index < position; index++) {
-            Item item = items[index];
-            if (item.getName().equals(key)) {
-                rsl = item;
+            if(items[index].getName().equals(key)) {
+                rsl[0] = items[index];
                 break;
             }
         }

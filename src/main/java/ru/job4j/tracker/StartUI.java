@@ -1,4 +1,5 @@
 package ru.job4j.tracker;
+import java.util.Arrays;
 
 /**
  * 0. Add new Item
@@ -12,6 +13,13 @@ package ru.job4j.tracker;
  */
 
 public class StartUI {
+
+    public static void printStr(Item[] item) {
+        for (int i = 0; i < item.length; i++) {
+            System.out.println(item[i].getId() + " " + item[i].getName());
+        }
+    }
+
 
     public static void createItem(Input input, Tracker tracker) {
         System.out.println("=== Create a new Item ====");
@@ -69,8 +77,7 @@ public class StartUI {
             }  else if (select == 5) {
                 System.out.println("==== Find items by name ====");
                 String name = input.askStr("Input the name of items");
-                Item findItem = tracker.findByName(name);
-                System.out.println(findItem.getId() + " " + findItem.getName());
+                    printStr(tracker.findByName(name));
              }
              else if (select == 6) {
                 run = false;
