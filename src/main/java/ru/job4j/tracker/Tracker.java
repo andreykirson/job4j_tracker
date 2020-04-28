@@ -63,8 +63,7 @@ public class Tracker {
             Item item = items[index];
                 itemsWithoutNull[index] = item;
         }
-        itemsWithoutNull = Arrays.copyOf(itemsWithoutNull, position);
-        return itemsWithoutNull;
+        return Arrays.copyOf(itemsWithoutNull, position);
     }
 
     private int indexOf(String id) {
