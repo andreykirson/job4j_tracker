@@ -50,11 +50,9 @@ public class StartUI {
         }
     }
 
-    public static void findAll(Input input, Tracker tracker) {
+    public static void findAll(Tracker tracker) {
         System.out.println("=== Show all Items ====");
-        for (int i = 0; i < tracker.findAll().length; i++) {
-            System.out.println(tracker.findAll()[i].getId() + " " + tracker.findAll()[i].getName());
-        }
+        printStr(tracker.findAll());
     }
 
     public static void findId(Input input, Tracker tracker) {
@@ -78,7 +76,7 @@ public class StartUI {
             if (select == 0) {
                 StartUI.createItem(input, tracker);
             } else if (select == 1) {
-                StartUI.findAll(input, tracker);
+                StartUI.findAll(tracker);
             }
              else if (select == 2) {
                 StartUI.replaceItem(input, tracker);
