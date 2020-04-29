@@ -16,7 +16,7 @@ public class StartUI {
 
     public static void printStr(Item[] item) {
         for (int i = 0; i < item.length; i++) {
-            System.out.println(item[i].getId() + " " + item[i].getName());
+            System.out.println(item[i].toString());
         }
     }
 
