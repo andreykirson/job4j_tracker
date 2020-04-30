@@ -19,7 +19,6 @@ public class StartUI {
         }
     }
 
-
     public static void createItem(Input input, Tracker tracker) {
         System.out.println("=== Create a new Item ====");
         String name = input.askStr("Enter name: ");
@@ -58,7 +57,7 @@ public class StartUI {
         System.out.println("==== Find item by Id ====");
         String id = input.askStr("Input id of item:");
         Item findItem = tracker.findById(id);
-        System.out.println(findItem.getId() + " " + findItem.getName());
+        System.out.println(findItem.toString());
     }
 
     public static void findName(Input input, Tracker tracker) {
@@ -119,7 +118,6 @@ public class StartUI {
             System.out.println(index + ". " + actions[index].name());
         }
     }
-
 
     public static void main(String[] args) {
         Input input = new ConsoleInput();
