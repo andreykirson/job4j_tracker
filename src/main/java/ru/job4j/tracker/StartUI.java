@@ -1,16 +1,5 @@
 package ru.job4j.tracker;
 
-/**
- * 0. Add new Item
- * 1. Show all items
- * 2. Edit item
- * 3. Delete item
- * 4. Find item by Id
- * 5. Find items by name
- * 6. Exit Program
- * Select:
- */
-
 public class StartUI {
 
     public static void printStr(Item[] item) {
@@ -66,31 +55,6 @@ public class StartUI {
         printStr(tracker.findByName(name));
     }
 
-    public void init(Input input, Tracker tracker) {
-        boolean run = true;
-        while (run) {
-            this.showMenu();
-            int select = Integer.valueOf(input.askStr("Select: "));
-            if (select == 0) {
-                StartUI.createItem(input, tracker);
-            } else if (select == 1) {
-                StartUI.findAll(tracker);
-            }
-             else if (select == 2) {
-                StartUI.replaceItem(input, tracker);
-            } else if (select == 3) {
-                StartUI.deleteItem(input, tracker);
-            } else if (select == 4) {
-                StartUI.findId(input, tracker);
-            }  else if (select == 5) {
-                StartUI.findName(input, tracker);
-             }
-             else if (select == 6) {
-                run = false;
-            }
-        }
-    }
-
     private void showMenu() {
         System.out.println("Menu.");
         System.out.println("0. Add new Item");
@@ -106,7 +70,7 @@ public class StartUI {
         boolean run = true;
         while (run) {
             this.showMenu(actions);
-            int select = input.askInt("Select: ");
+            int select = input.askInt("Select: ", actions.length);
             UserAction action = actions[select];
             run = action.execute(input, tracker);
         }
@@ -120,7 +84,7 @@ public class StartUI {
     }
 
     public static void main(String[] args) {
-        Input input = new ConsoleInput();
+        Input validate = new ValidateInput();
         Tracker tracker = new Tracker();
         UserAction[] actions = {
                 new CreateAction(),
@@ -131,6 +95,6 @@ public class StartUI {
                 new FindbyNameAction(),
                 new ExitAction()
         };
-        new StartUI().init(input, tracker, actions);
+        new StartUI().init(validate, tracker, actions);
     }
 }
