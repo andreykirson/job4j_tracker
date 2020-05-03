@@ -50,7 +50,7 @@ public class StartUITest {
         tracker.add(item);
         act.execute(new StubInput(new String[] {}), tracker);
         String expect = new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
-                .add("Item{id = " + item.getId() +"', name = " + "'" + item.getName() + "'}")
+                .add("[Item{id = " + item.getId() +"', name = " + "'" + item.getName() + "'}]")
                 .toString();
         assertThat(new String(out.toByteArray()), is(expect));
         System.setOut(def);
@@ -67,7 +67,7 @@ public class StartUITest {
         tracker.add(item);
         act.execute(new StubInput(new String[] {"testFind"}), tracker);
         String expect = new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
-                .add("Item{id = " + item.getId() +"', name = " + "'" + item.getName() + "'}")
+                .add("[Item{id = " + item.getId() +"', name = " + "'" + item.getName() + "'}]")
                 .toString();
         assertThat(new String(out.toByteArray()), is(expect));
         System.setOut(def);
