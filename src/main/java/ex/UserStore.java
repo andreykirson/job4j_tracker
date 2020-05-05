@@ -19,23 +19,18 @@ public class UserStore {
             return true;
         }
 
-    public static void main(String[] args) throws UserNotFoundException {
+    public static void main(String[] args) {
         User[] users = {
                 new User("Petr Arsentev", true)
         };
         try {
-          findUser(users, "Petr Arsentev");
-        }
-        catch (UserNotFoundException e){
-            System.out.println(e.getMessage());
-        }
-        try {
-            User user = new User("Pe", true);
+            User user = findUser(users, "Petr Arsentev");
             if (validate(user)) {
                 System.out.println("This user has an access");
             }
-        }
-        catch (UserInvalidException e){
+        } catch (UserInvalidException e){
+            System.out.println(e.getMessage());
+        } catch (UserNotFoundException e){
             System.out.println(e.getMessage());
         }
     }
