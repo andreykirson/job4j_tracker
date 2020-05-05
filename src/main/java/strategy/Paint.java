@@ -8,7 +8,6 @@ public class Paint {
         System.out.println(square.draw());
         System.out.println(triangle.draw());
     }
-
     public void draw(Shape shape) {
         System.out.print(shape.draw());
     }
