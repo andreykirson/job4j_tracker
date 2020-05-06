@@ -9,24 +9,13 @@ public class Machine {
         int[] rsl = new int[100];
         int size = 0;
         int smallChange = money - price;
-        int index = 0;
-        int smallChangeTemp = smallChange;
         for (int i = 0; i < COINS.length; i++){
-            smallChange = smallChangeTemp;
-            while (smallChange > 0) {
-                smallChangeTemp = smallChange;
+            while (smallChange >= COINS[i]) {
                 smallChange = smallChange - COINS[i];
-                if(smallChange < 0){
-                    break;
-                }
-                rsl[index] = COINS[i];
-                index++;
+                rsl[size] = COINS[i];
+                size++;
             }
-            if (smallChange == 0) {
-                size = index;
-                break;
             }
-        }
         return Arrays.copyOf(rsl, size);
     }
 }
