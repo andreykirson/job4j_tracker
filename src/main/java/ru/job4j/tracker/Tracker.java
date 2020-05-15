@@ -61,6 +61,7 @@ public class Tracker {
         for (Item item:items) {
              if (item.getId().equals(id)){
                  rsl = index;
+                 break;
             }
             index++;
         }
