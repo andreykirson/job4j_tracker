@@ -18,16 +18,14 @@ public class BankService {
         List<Account> accounts = users.get(user);
         if (accounts.size() == 0) {
             accounts.add(new Account(account.getRequisite(), account.getBalance()));
-            users.put(user, accounts);
         } else {
             for (Account accountCounter : accounts
             ) {
-                if (!accountCounter.getRequisite().equals(account.getRequisite())) {
-                    accounts.add(new Account(account.getRequisite(), account.getBalance()));
+                if (accountCounter.getRequisite().contains(account.getRequisite())) {
                     break;
                 }
             }
-            users.put(user, accounts);
+            accounts.add(new Account(account.getRequisite(), account.getBalance()));
         }
     }
 
