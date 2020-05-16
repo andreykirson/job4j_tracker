@@ -16,9 +16,20 @@ public class BankService {
     public void addAccount(String passport, Account account) {
         User user = findByPassport(passport);
         List<Account> accounts = users.get(user);
-        accounts.add(new Account(account.getRequisite(), account.getBalance()));
-        users.put(user, accounts);
+        if (accounts.size() == 0) {
+            accounts.add(new Account(account.getRequisite(), account.getBalance()));
+            users.put(user, accounts);
+        } else {
+            for (Account accountCounter : accounts
+            ) {
+                if (!accountCounter.getRequisite().equals(account.getRequisite())) {
+                    accounts.add(new Account(account.getRequisite(), account.getBalance()));
+                    break;
+                }
+            }
+            users.put(user, accounts);
         }
+    }
 
     public User findByPassport(String passport) {
         for (User user : users.keySet()){
@@ -32,7 +43,7 @@ public class BankService {
 
     public Account findByRequisite(String passport, String requisite) {
         User user = findByPassport(passport);
-        if(user.equals(null)){
+        if(user == null){
             return null;
         }
         List<Account> accounts = users.get(user);
@@ -51,7 +62,7 @@ public class BankService {
         User userDest = findByPassport(destPassport);
         Account srcAccount = findByRequisite(userSrc.getPassport(), srcRequisite);
         if(srcAccount == null || srcAccount.getBalance() < amount){
-            return rsl;
+            rsl = false;
         }
         else {
                 Account destAccount = findByRequisite(userDest.getPassport(), dеstRequisite);
@@ -66,6 +77,15 @@ public class BankService {
     public void removeUser(String Passport){
         User user = findByPassport(Passport);
         users.remove(user);
+    }
+
+
+    public static void main(String[] args) {
+        User user = new User("3434", "Petr Arsentev");
+        BankService bank = new BankService();
+        bank.addUser(user);
+        bank.addAccount(user.getPassport(), new Account("5546", 150D));
+        bank.addAccount(user.getPassport(), new Account("5546", 150D));
     }
 
     }
