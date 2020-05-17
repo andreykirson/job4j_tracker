@@ -1,6 +1,7 @@
 package ru.job4j.tracker;
 
 import java.util.*;
+import java.util.Comparator;
 
 /**
  * @version $Id$
@@ -86,5 +87,22 @@ public class Tracker {
         }
         return rsl;
     }
+
+    public void Sort() {
+        Collections.sort(items);
+    }
+
+    public void ReverseSort() {
+        Comparator<Item> comp = (Item::compareTo);
+        Collections.sort(items, comp.reversed());
+    }
+
+
+    public void SortByName() {
+        Collections.sort(items, new ItemSortByName());
+    }
+
+
+
 }
 
