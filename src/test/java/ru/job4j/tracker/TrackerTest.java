@@ -1,10 +1,13 @@
 package ru.job4j.tracker;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import org.hamcrest.collection.IsIterableContainingInOrder;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -12,6 +15,7 @@ import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.*;
 
 public class TrackerTest {
+
     @Test
     public void whenAddNewItemThenTrackerHasSameItem() {
         Tracker tracker = new Tracker();
@@ -72,15 +76,47 @@ public class TrackerTest {
         Item item_1 = new Item("C");
         Item item_2 = new Item("A");
         Item item_3 = new Item("B");
+        Item item_4 = new Item("Y");
         tracker.add(item_1);
         tracker.add(item_2);
         tracker.add(item_3);
+        tracker.add(item_4);
         tracker.Sort();
-        System.out.println(tracker.findAll().toString());
-        tracker.SortByName();
-        System.out.println(tracker.findAll().toString());
+        List<Item> actual = new ArrayList<>();
+        actual = tracker.findAll();
+        List<String> name = new ArrayList<>();
+        int i = 0;
+        for (Item item:actual) {
+            name.add(i, item.getName());
+            i++;
+        }
+        Assert.assertThat(name, IsIterableContainingInOrder.contains("A", "B", "C", "Y"));
         tracker.ReverseSort();
-        System.out.println(tracker.findAll().toString());
     }
+
+    @Test
+    public void ReverseSort() {
+        Tracker tracker = new Tracker();
+        Item item_1 = new Item("C");
+        Item item_2 = new Item("A");
+        Item item_3 = new Item("B");
+        Item item_4 = new Item("Y");
+        tracker.add(item_1);
+        tracker.add(item_2);
+        tracker.add(item_3);
+        tracker.add(item_4);
+        tracker.ReverseSort();
+        List<Item> actual = new ArrayList<>();
+        actual = tracker.findAll();
+        List<String> name = new ArrayList<>();
+        int i = 0;
+        for (Item item:actual) {
+            name.add(i, item.getName());
+            i++;
+        }
+        Assert.assertThat(name, IsIterableContainingInOrder.contains("Y", "C", "B", "A"));
+    }
+
+
 
 }
