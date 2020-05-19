@@ -4,15 +4,13 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import org.hamcrest.collection.IsIterableContainingInOrder;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.IsNull.nullValue;
-import static org.junit.Assert.*;
+
 
 public class TrackerTest {
 
@@ -81,7 +79,7 @@ public class TrackerTest {
         tracker.add(item_2);
         tracker.add(item_3);
         tracker.add(item_4);
-        tracker.Sort();
+        tracker.SortByName();
         List<Item> actual = new ArrayList<>();
         actual = tracker.findAll();
         List<String> name = new ArrayList<>();
@@ -105,7 +103,7 @@ public class TrackerTest {
         tracker.add(item_2);
         tracker.add(item_3);
         tracker.add(item_4);
-        tracker.ReverseSort();
+        tracker.ItemReverseSortByName();
         List<Item> actual = new ArrayList<>();
         actual = tracker.findAll();
         List<String> name = new ArrayList<>();
@@ -116,7 +114,4 @@ public class TrackerTest {
         }
         Assert.assertThat(name, IsIterableContainingInOrder.contains("Y", "C", "B", "A"));
     }
-
-
-
 }

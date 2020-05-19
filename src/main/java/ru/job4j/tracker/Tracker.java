@@ -87,12 +87,13 @@ public class Tracker {
         return rsl;
     }
 
-    public void Sort() {
-        Collections.sort(items);
+    public void SortByName() {
+        Collections.sort(items, new ItemSortByName());
     }
 
-    public void ReverseSort() {
-        Collections.sort(items, Collections.reverseOrder());
+    public void ItemReverseSortByName() {
+        Collections.sort(items, new ItemReverseSortByName());
     }
+
 }
 
