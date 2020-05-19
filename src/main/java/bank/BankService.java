@@ -19,7 +19,7 @@ public class BankService {
         if (accounts.size() == 0) {
             accounts.add(new Account(account.getRequisite(), account.getBalance()));
         } else {
-                if (accounts.contains(account.getRequisite()) != true) {
+                if (!accounts.contains(account){
                     accounts.add(account);
                 }
         }
