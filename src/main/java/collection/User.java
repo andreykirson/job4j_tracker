@@ -12,15 +12,11 @@ public class User implements Comparable<User> {
     }
 
 
-
-
     @Override
     public int compareTo(User o){
-        if (CharSequence.compare(this.name, o.name) == 0) {
-            return Integer.compare(this.age, o.age);
-        }
-
-       return CharSequence.compare(this.name, o.name);
+        int name = this.name.compareTo(o.name);
+        int finalComparison = name == 0 ? Integer.compare(this.age, o.age) : name;
+       return finalComparison;
     }
 
 
