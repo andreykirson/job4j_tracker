@@ -1,15 +1,17 @@
-package ru.job4j.tracker.ex;
+package ex;
+
+import ex.ElementNotFoundException;
 
 public class FindEl {
     public static int indexOf(String[] values, String key) throws ElementNotFoundException {
         int rsl = -1;
-        for(String value : values){
-            if(value.equals(key)){
+        for (String value : values) {
+            if (value.equals(key)) {
                 rsl = 1;
                 break;
             }
         }
-        if(rsl == -1) {
+        if (rsl == -1) {
             throw new ElementNotFoundException("The element " + key + " didn't find");
         }
         return rsl;

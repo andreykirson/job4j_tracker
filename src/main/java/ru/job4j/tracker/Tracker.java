@@ -41,17 +41,17 @@ public class Tracker {
         return String.valueOf(rm.nextLong() + System.currentTimeMillis());
     }
 
-    public List <Item> findByName(String key){
-        List <Item> rsl = new ArrayList<>();
+    public List<Item> findByName(String key) {
+        List<Item> rsl = new ArrayList<>();
         for (Item item:items) {
-            if (item.getName().equals(key)){
+            if (item.getName().equals(key)) {
                 rsl.add(item);
             }
         }
         return rsl;
     }
 
-    public List <Item> findAll(){
+    public List<Item> findAll() {
         return items;
     }
 
@@ -59,7 +59,7 @@ public class Tracker {
         int rsl = -1;
         int index = 0;
         for (Item item:items) {
-             if (item.getId().equals(id)){
+             if (item.getId().equals(id)) {
                  rsl = index;
                  break;
             }
@@ -68,7 +68,7 @@ public class Tracker {
         return rsl;
     }
 
-    public boolean replace(String id, Item repItem){
+    public boolean replace(String id, Item repItem) {
         int index = indexOf(id);
         boolean rsl = index != -1;
         if (rsl) {
@@ -87,11 +87,11 @@ public class Tracker {
         return rsl;
     }
 
-    public void SortByName() {
+    public void sortByName() {
         Collections.sort(items, new ItemSortByName());
     }
 
-    public void ItemReverseSortByName() {
+    public void itemReverseSortByName() {
         Collections.sort(items, new ItemReverseSortByName());
     }
 

@@ -3,25 +3,25 @@ package pojo;
 import java.util.Date;
 
 public class Student {
-    private String FirstName;
-    private String SecondName;
+    private String firstName;
+    private String secondName;
     private String group;
-    private Date ReceiptDate;
+    private Date receiptDate;
 
     public String getFirstName() {
-        return FirstName;
+        return firstName;
     }
 
     public void setFirstName(String firstName) {
-        FirstName = firstName;
+        firstName = firstName;
     }
 
     public String getSecondName() {
-        return SecondName;
+        return secondName;
     }
 
     public void setSecondName(String secondName) {
-        SecondName = secondName;
+        secondName = secondName;
     }
 
     public String getGroup() {
@@ -33,10 +33,10 @@ public class Student {
     }
 
     public Date getReceiptDate() {
-        return ReceiptDate;
+        return receiptDate;
     }
 
     public void setReceiptDate(Date receiptDate) {
-        ReceiptDate = receiptDate;
+        receiptDate = receiptDate;
     }
 }

@@ -13,7 +13,8 @@ public static void main(String[] args) {
         System.out.println(question + ", Да");
     } else if (answer == 1) {
         System.out.println(question + ", Нет");
-    } else { System.out.println(question + "Может быть");
+    } else {
+        System.out.println(question + "Может быть");
     }
 }
 

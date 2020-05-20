@@ -79,7 +79,7 @@ public class TrackerTest {
         tracker.add(item_2);
         tracker.add(item_3);
         tracker.add(item_4);
-        tracker.SortByName();
+        tracker.sortByName();
         List<Item> actual = new ArrayList<>();
         actual = tracker.findAll();
         List<String> name = new ArrayList<>();
@@ -89,7 +89,6 @@ public class TrackerTest {
             i++;
         }
         Assert.assertThat(name, IsIterableContainingInOrder.contains("A", "B", "C", "Y"));
-        tracker.ReverseSort();
     }
 
     @Test
@@ -103,7 +102,7 @@ public class TrackerTest {
         tracker.add(item_2);
         tracker.add(item_3);
         tracker.add(item_4);
-        tracker.ItemReverseSortByName();
+        tracker.itemReverseSortByName();
         List<Item> actual = new ArrayList<>();
         actual = tracker.findAll();
         List<String> name = new ArrayList<>();

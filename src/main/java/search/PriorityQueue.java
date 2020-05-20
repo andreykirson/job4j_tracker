@@ -1,5 +1,7 @@
 package search;
 
+import oop.Array;
+
 import javax.swing.*;
 import java.util.LinkedList;
 
@@ -27,5 +29,4 @@ public class PriorityQueue {
     public Task take() {
         return tasks.poll();
     }
-
 }

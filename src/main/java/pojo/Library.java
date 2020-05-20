@@ -1,7 +1,7 @@
 package pojo;
 
 public class Library {
-    public static void main (String[] args){
+    public static void main(String[] args) {
         Book first = new Book("Clean code", 100);
         Book second = new Book("Algorithm", 400);
         Book third = new Book("Structure of data", 1000);

@@ -1,13 +1,13 @@
-package ru.job4j.tracker;
+package oop;
 
 public class Builder extends Engineer {
-    public Builder (){
+    public Builder() {
         super();
     }
 
         int brick, deck, steel, glass;
 
-    public void build(){
+    public void build() {
 
     }
 

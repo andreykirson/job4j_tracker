@@ -1,5 +1,6 @@
 package collection;
 
+import java.util.Comparator;
 import java.util.Objects;
 
 public class Citizen {
@@ -21,8 +22,12 @@ public class Citizen {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Citizen citizen = (Citizen) o;
         return Objects.equals(passport, citizen.passport);
     }
@@ -31,4 +36,10 @@ public class Citizen {
     public int hashCode() {
         return Objects.hash(passport);
     }
+
+
+
 }
+
+
+

@@ -1,4 +1,4 @@
-package ru.job4j.tracker;
+package oop;
 
 public class Programmer extends Engineer {
     public Programmer() {
@@ -8,7 +8,6 @@ public class Programmer extends Engineer {
     int computer;
 
     public String code(String programm) {
-        ;
         return programm;
     }
 

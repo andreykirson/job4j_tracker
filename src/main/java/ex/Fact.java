@@ -2,10 +2,11 @@ package ex;
 
 public class Fact {
     public static void main(String[] args) {
-        System.out.println(calc(5));
+        Fact fact = new Fact();
+        System.out.println(fact.calc(5));
     }
 
-    public static int calc(int n) {
+    public int calc(int n) {
         int rsl = 1;
         if (n < 0) {
             throw new IllegalArgumentException("n must be more than 0");

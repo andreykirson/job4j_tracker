@@ -1,4 +1,4 @@
-package ru.job4j.tracker;
+package oop;
 
 public class Profession {
     String name, surname, education, birthday;

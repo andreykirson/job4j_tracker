@@ -1,4 +1,4 @@
-package ru.job4j.tracker;
+package oop;
 
 public class Surgeon extends Doctor {
     public Surgeon() {
