@@ -6,19 +6,14 @@ public class Departments {
     public static List<String> fillGaps(List<String> deps) {
         HashSet<String> tmp = new HashSet<>();
         for (String value : deps) {
-            String[] el = value.split("/");
-            if (el.length != 1) {
-                tmp.add(el[0]);
-                tmp.add(value);
-            } else {
-                if (deps.size() == 0) {
-                    tmp.add(el[0]);
-                }
+            String start = "";
+            for (String el : value.split("/")) {
+                start = start + el;
+                tmp.add (start);
+                start = start + "/";
             }
         }
-        ArrayList s = new ArrayList<>(tmp);
-        Collections.sort(s);
-        return s;
+        return sortAsc(new ArrayList<>(tmp));
     }
 
     public static void main(String[] args) {
@@ -26,7 +21,9 @@ public class Departments {
     }
 
 
-    public static void sortAsc(List<String> orgs) {
+    public static List<String> sortAsc(List<String> orgs) {
+        Collections.sort(orgs, new AscComp());
+        return orgs;
     }
 
     public static void sortDesc(List<String> orgs) {
