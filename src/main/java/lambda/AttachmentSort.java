@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import static lambda.SearchAtt.filter;
+
 public class AttachmentSort {
 
     public static void main(String[] args) {
@@ -31,5 +33,15 @@ public class AttachmentSort {
         };
         attachments.sort(comparatorName);
         System.out.println(attachments);
+
+
+        List attachmentsNameFilter = filter(attachments, (Attachment att) -> att.getName().equals("image 1"));
+        System.out.println(attachmentsNameFilter);
+
+        List attachmentsSizeFilter = filter(attachments, (Attachment att) -> att.getSize() < 100);
+        System.out.println(attachmentsSizeFilter);
+
     }
+
+
 }
