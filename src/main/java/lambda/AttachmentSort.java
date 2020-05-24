@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class AttachmentSort {
+
     public static void main(String[] args) {
         List<Attachment> attachments = Arrays.asList(
                 new Attachment("image 1", 100),
@@ -21,12 +22,11 @@ public class AttachmentSort {
         };
         attachments.sort(comparatorSize);
         System.out.println(attachments);
-        Comparator<Attachment> comparatorName =  new Comparator() {
-            @Override
-            public int compare(Object o1, Object o2) {
-                Attachment left = (Attachment) o1;
-                Attachment right = (Attachment) o2;
-                return left.getName().compareTo(right.getName());
+
+        Comparator<Attachment> comparatorName =  new Comparator<Attachment>() {
+               @Override
+            public int compare(Attachment o1, Attachment o2) {
+                return o1.getName().compareTo(o2.getName());
             }
         };
         attachments.sort(comparatorName);
