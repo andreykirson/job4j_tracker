@@ -30,10 +30,11 @@ public class SearchAtt {
     public static List<Attachment> filter(List<Attachment> attachments, Predicate<Attachment> predicate)
     {
         List<Attachment> result = new ArrayList<>();
-        for (Attachment att:attachments)
-            if (predicate.test(att))
+        for (Attachment att:attachments) {
+            if (predicate.test(att)) {
                 result.add(att);
+            }
+        }
         return result;
     }
-
 }
