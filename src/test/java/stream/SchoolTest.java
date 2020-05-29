@@ -15,7 +15,7 @@ public class SchoolTest {
 
     @Test
     public void classA() {
-        List Students = new ArrayList();
+        List<Student> Students = new ArrayList();
         Students.add(new Student(72, "Sidorov"));
         Students.add(new Student(68, "Sikorsky"));
         Students.add(new Student(50, "Klochkov"));
@@ -27,15 +27,44 @@ public class SchoolTest {
         ClassAExpected.add(new Student(72, "Sidorov"));
         ClassAExpected.add(new Student(85, "Jane"));
 
-        List<Student> ClassBExpected = new ArrayList();
-        ClassBExpected.add(new Student(68, "Sikorsky"));
+        List <Student> classA = collect(Students, (Student student) -> student.getScore() >= 70 & student.getScore() <= 100);
+        assertThat(classA, is(ClassAExpected));
+    }
 
-        List<Student> ClassCExpected = new ArrayList();
-        ClassCExpected.add(new Student(45, "Dobrobabin"));
-        ClassCExpected.add(new Student(20, "Rodari"));
+    @Test
+    public void classB() {
+        List<Student> Students = new ArrayList();
+        Students.add(new Student(72, "Sidorov"));
+        Students.add(new Student(68, "Sikorsky"));
+        Students.add(new Student(50, "Klochkov"));
+        Students.add(new Student(45, "Dobrobabin"));
+        Students.add(new Student(20, "Rodari"));
+        Students.add(new Student(85, "Jane"));
 
-        List <Student> classA = collect(Students, (Student student) -> student.getScore() > 70 & student.getScore() < 100);
-        Assert.assertEquals(classA, ClassAExpected);
+        List<Student> ClassAExpected = new ArrayList();
+        ClassAExpected.add(new Student(68, "Sikorsky"));
+        ClassAExpected.add(new Student(50, "Klochkov"));
+
+        List <Student> classA = collect(Students, (Student student) -> student.getScore() >= 50 & student.getScore() < 70);
+        assertThat(classA, is(ClassAExpected));
+    }
+
+    @Test
+    public void classC() {
+        List<Student> Students = new ArrayList();
+        Students.add(new Student(72, "Sidorov"));
+        Students.add(new Student(68, "Sikorsky"));
+        Students.add(new Student(50, "Klochkov"));
+        Students.add(new Student(45, "Dobrobabin"));
+        Students.add(new Student(20, "Rodari"));
+        Students.add(new Student(85, "Jane"));
+
+        List<Student> ClassAExpected = new ArrayList();
+        ClassAExpected.add(new Student(45, "Dobrobabin"));
+        ClassAExpected.add(new Student(20, "Rodari"));
+
+        List <Student> classA = collect(Students, (Student student) -> student.getScore() > 0 & student.getScore() < 50);
+        assertThat(classA, is(ClassAExpected));
     }
 
 }
