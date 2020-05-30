@@ -1,5 +1,7 @@
 package stream;
 
+import java.util.List;
+
 public class Address {
 
     private String city;
@@ -7,4 +9,8 @@ public class Address {
     private int home;
     private int apartment;
 
+
+    public String getCity() {
+        return city;
+    }
 }
