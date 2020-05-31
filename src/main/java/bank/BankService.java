@@ -1,15 +1,12 @@
 package bank;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BankService {
     private Map<User, List<Account>> users = new HashMap<>();
 
     public void addUser(User user) {
-        List<Account> accounts = new ArrayList<Account>();
+        List<Account> accounts = new ArrayList<>();
         users.putIfAbsent(user, accounts);
     }
 
@@ -25,28 +22,29 @@ public class BankService {
         }
     }
 
-    public User findByPassport(String passport) {
-        for (User user : users.keySet()) {
-            if (user.getPassport().equals(passport)) {
-                return user;
-            }
-        }
-    return null;
-    }
+    // Here can be used stream filter predicate
 
+    public User findByPassport(String passport) {
+        Optional<User> u = users.keySet().stream()
+                .filter(user -> user.getPassport().equals(passport))
+                .findFirst();
+        if (u.isPresent()) {
+            return u.get();
+        } else {
+            return null;
+        }
+    }
 
     public Account findByRequisite(String passport, String requisite) {
         User user = findByPassport(passport);
         if (user == null) {
             return null;
         }
-        List<Account> accounts = users.get(user);
-        for (Account account:accounts) {
-                  if (account.getRequisite().equals(requisite)) {
-                  return account;
-              }
-        }
-        return null;
+       return (users.get(user).stream()
+                .filter(account -> account.getRequisite().equals(requisite))
+                .findFirst()
+                .get()
+       );
     }
 
     public boolean transferMoney(String srcPassport, String srcRequisite,
@@ -82,3 +80,4 @@ public class BankService {
     }
 
     }
+
