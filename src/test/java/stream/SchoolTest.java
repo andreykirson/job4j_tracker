@@ -15,13 +15,12 @@ public class SchoolTest {
 
     @Test
     public void classA() {
-        List<Student> Students = new ArrayList();
-        Students.add(new Student(72, "Sidorov"));
-        Students.add(new Student(68, "Sikorsky"));
-        Students.add(new Student(50, "Klochkov"));
-        Students.add(new Student(45, "Dobrobabin"));
-        Students.add(new Student(20, "Rodari"));
-        Students.add(new Student(85, "Jane"));
+        List<Student> Students = List.of(new Student(72, "Sidorov"),
+                new Student(68, "Sikorsky"),
+                new Student(50, "Klochkov"),
+                new Student(45, "Dobrobabin"),
+                new Student(20, "Rodari"),
+                new Student(85, "Jane"));
 
         List<Student> ClassAExpected = new ArrayList();
         ClassAExpected.add(new Student(72, "Sidorov"));

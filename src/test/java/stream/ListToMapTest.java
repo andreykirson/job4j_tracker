@@ -15,14 +15,13 @@ public class ListToMapTest {
 
         ListToMap listToMap = new ListToMap();
 
-        List<Student> students = new ArrayList();
-        students.add(new Student(72, "Sidorov"));
-        students.add(new Student(68, "Sikorsky"));
-        students.add(new Student(50, "Klochkov"));
-        students.add(new Student(45, "Dobrobabin"));
-        students.add(new Student(20, "Rodari"));
-        students.add(new Student(85, "Jane"));
-        students.add(new Student(100, "Jane"));
+        List<Student> students = List.of(new Student(72, "Sidorov"),
+                new Student(68, "Sikorsky"),
+                new Student(50, "Klochkov"),
+                new Student(45, "Dobrobabin"),
+                new Student(20, "Rodari"),
+                new Student(85, "Jane"),
+                new Student(100, "Jane"));
 
         Map<String, Student> test = listToMap.listToMap(students);
         assertEquals(6, test.size());
