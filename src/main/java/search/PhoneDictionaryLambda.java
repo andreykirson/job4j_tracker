@@ -18,7 +18,7 @@ public class PhoneDictionaryLambda {
         Predicate<Person> combine = containName.or(containSurName.or(containAddress.or(containPhone)));
 
         ArrayList<Person> result = new ArrayList<>();
-        for (Person person : persons) {
+        for (var person : persons) {
             if (combine.test(person)) {
                 result.add(person);
             }
