@@ -28,23 +28,16 @@ public class BankService {
         Optional<User> u = users.keySet().stream()
                 .filter(user -> user.getPassport().equals(passport))
                 .findFirst();
-        if (u.isPresent()) {
-            return u.get();
-        } else {
-            return null;
-        }
+        return u.orElse(null);
     }
 
     public Account findByRequisite(String passport, String requisite) {
-        User user = findByPassport(passport);
-        if (user == null) {
-            return null;
-        }
-       return (users.get(user).stream()
+        List<Account> accountEmpty = new ArrayList<>();
+        Optional<Account> accountFound = users.getOrDefault(findByPassport(passport), accountEmpty).stream()
                 .filter(account -> account.getRequisite().equals(requisite))
-                .findFirst()
-                .get()
-       );
+                .findFirst();
+        return accountFound.orElse(null);
+
     }
 
     public boolean transferMoney(String srcPassport, String srcRequisite,
@@ -79,5 +72,7 @@ public class BankService {
         bank.addAccount(user.getPassport(), new Account("5546", 150D));
     }
 
-    }
+}
+
+
 
