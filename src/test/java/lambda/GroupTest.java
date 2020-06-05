@@ -25,15 +25,7 @@ public class GroupTest {
 
         Map<String, Set<String>> result = group.sections(students);
 
-        Map<String, Set<String>> expected = Map.of(
-                "PowerLifting", Set.of("B"),
-                "Baseball", Set.of("C"),"Box", Set.of("E"),
-                "Swimming", Set.of("A", "C"),
-                "Carting", Set.of("D"),
-                "Football", Set.of("A", "B", "D")
-                );
-
-        assertThat(result, is(expected));
+        assertThat(result.get("Swimming"), is(Set.of("A", "C", "E")));
 
 
     }
