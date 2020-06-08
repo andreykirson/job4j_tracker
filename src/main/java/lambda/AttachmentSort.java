@@ -40,8 +40,5 @@ public class AttachmentSort {
 
         List attachmentsSizeFilter = filter(attachments, (Attachment att) -> att.getSize() < 100);
         System.out.println(attachmentsSizeFilter);
-
     }
-
-
 }

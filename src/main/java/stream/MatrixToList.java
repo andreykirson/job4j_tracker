@@ -11,10 +11,14 @@ import java.util.stream.Stream;
 
 public class MatrixToList {
 
-   public List<Integer> flatMatrix (Integer[][] data) {
+   public List<Integer> flatMatrix(Integer[][] data) {
        Stream<Integer[]> temp = Stream.of(data);
-       return(temp.flatMap(Arrays::stream)
+       return (temp.flatMap(Arrays::stream)
                .collect(Collectors.toList())
                );
    }
+
+
+
+
 }

@@ -41,10 +41,15 @@ public class Student {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Student student = (Student) o;
-        return score == student.score &&
+        return score == student.score
+                &&
                 surname.equals(student.surname);
     }
 

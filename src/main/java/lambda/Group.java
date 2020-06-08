@@ -18,8 +18,7 @@ public class Group {
                                     left.addAll(right);
                                     return left;
                                 } // для агрегации.
-                        )
-                        )
+                        ))
                 );
     }
 
@@ -31,7 +30,6 @@ public class Group {
                 this.value = value;
             }
         }
-
 }
 
 
