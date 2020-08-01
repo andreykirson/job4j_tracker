@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 
 public class SqlTracker implements Store {
-    private static final Logger log = LoggerFactory.getLogger(SqlTracker.class);
+    private static final Logger Log = LoggerFactory.getLogger(SqlTracker.class);
     private Connection cn;
 
     public void init() {
@@ -35,13 +35,12 @@ public class SqlTracker implements Store {
     }
 
     @Override
-    public Item add(Item item) {
+    public Item add(Item item) throws Exception {
         Connection conn = null;
         PreparedStatement statement = null;
         String SQL = "insert into items (name) values (?)";
-        SqlTracker sqlTracker = new SqlTracker();
-        sqlTracker.init();
-        try {
+        try (SqlTracker sqlTracker = new SqlTracker()){
+            sqlTracker.init();
             conn = sqlTracker.cn;
             statement = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             statement.setNString(1, item.getName());
@@ -49,7 +48,7 @@ public class SqlTracker implements Store {
             rs.close();
             statement.close();
         } catch (SQLException e) {
-            log.error(e.getMessage(), e);
+            Log.error(e.getMessage(), e);
         }
         finally {
             if (conn != null) {
@@ -64,23 +63,23 @@ public class SqlTracker implements Store {
     }
 
     @Override
-    public boolean replace(String id, Item item) {
+    public boolean replace(String id, Item item) throws Exception {
         Connection conn = null;
         PreparedStatement statement = null;
         String SQL = "update items set name = ? where id = ?";
-        SqlTracker sqlTracker = new SqlTracker();
-        sqlTracker.init();
         boolean rs = false;
         int findId = Integer.parseInt(id);
-        try {
+        try (SqlTracker sqlTracker = new SqlTracker()) {
+            sqlTracker.init();
             conn = sqlTracker.cn;
-            statement.setNString(findId, item.getName());
+            statement.setNString(1, item.getName());
+            statement.setInt(2, findId);
             statement = conn.prepareStatement(SQL);
             statement.executeUpdate();
             statement.close();
             rs = true;
         } catch (SQLException e) {
-            log.error(e.getMessage(), e);
+            Log.error(e.getMessage(), e);
             rs = false;
         }
         finally {
@@ -96,15 +95,14 @@ public class SqlTracker implements Store {
     }
 
     @Override
-    public boolean delete(String id) {
+    public boolean delete(String id) throws Exception {
         Connection conn = null;
         PreparedStatement statement = null;
         String SQL = "delete from items where id = ?";
-        SqlTracker sqlTracker = new SqlTracker();
-        sqlTracker.init();
         boolean rs = false;
         int findId = Integer.parseInt(id);
-        try {
+        try (SqlTracker sqlTracker = new SqlTracker()) {
+            sqlTracker.init();
             conn = sqlTracker.cn;
             statement.setInt(1, findId);
             statement = conn.prepareStatement(SQL);
@@ -112,7 +110,7 @@ public class SqlTracker implements Store {
             statement.close();
             rs = true;
         } catch (SQLException e) {
-            log.error(e.getMessage(), e);
+            Log.error(e.getMessage(), e);
             rs = false;
         }
         finally {
@@ -128,14 +126,13 @@ public class SqlTracker implements Store {
     }
 
     @Override
-    public List<Item> findAll() {
+    public List<Item> findAll() throws Exception {
         Connection conn = null;
         PreparedStatement statement = null;
         String SQL = "select name from items";
-        SqlTracker sqlTracker = new SqlTracker();
-        sqlTracker.init();
         List<Item> item = null;
-        try {
+        try (SqlTracker sqlTracker = new SqlTracker()) {
+            sqlTracker.init();
             conn = sqlTracker.cn;
             statement = conn.prepareStatement(SQL);
             ResultSet rs = statement.executeQuery();
@@ -145,7 +142,7 @@ public class SqlTracker implements Store {
             rs.close();
             statement.close();
         } catch (SQLException e) {
-            log.error(e.getMessage(), e);
+            Log.error(e.getMessage(), e);
         }
         finally {
             if (conn != null) {
@@ -160,15 +157,14 @@ public class SqlTracker implements Store {
     }
 
     @Override
-    public List<Item> findByName(String key) {
+    public List<Item> findByName(String key) throws Exception {
         String findName = key;
         Connection conn = null;
         PreparedStatement statement = null;
         String SQL = "SELECT name from items where name = ?";
-        SqlTracker sqlTracker = new SqlTracker();
-        sqlTracker.init();
         List<Item> item = null;
-        try {
+        try (SqlTracker sqlTracker = new SqlTracker()) {
+            sqlTracker.init();
             conn = sqlTracker.cn;
             statement = conn.prepareStatement(SQL);
             statement.setNString(1, findName);
@@ -179,7 +175,7 @@ public class SqlTracker implements Store {
             rs.close();
             statement.close();
         } catch (SQLException e) {
-            log.error(e.getMessage(), e);
+            Log.error(e.getMessage(), e);
         }
         finally {
             if (conn != null) {
@@ -194,15 +190,14 @@ public class SqlTracker implements Store {
     }
 
     @Override
-    public Item findById(String id) throws SQLException {
+    public Item findById(String id) throws Exception {
         int findId = Integer.parseInt(id);
         Connection conn = null;
         PreparedStatement statement = null;
         String SQL = "SELECT name from items where id = ?";
-        SqlTracker sqlTracker = new SqlTracker();
-        sqlTracker.init();
         Item item = null;
-        try {
+        try (SqlTracker sqlTracker = new SqlTracker()) {
+            sqlTracker.init();
             conn = sqlTracker.cn;
             statement = conn.prepareStatement(SQL);
             statement.setInt(1, findId);
