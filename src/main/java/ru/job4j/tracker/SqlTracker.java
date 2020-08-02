@@ -9,8 +9,17 @@ import org.slf4j.LoggerFactory;
 
 
 public class SqlTracker implements Store {
-    private static final Logger Log = LoggerFactory.getLogger(SqlTracker.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SqlTracker.class);
     private Connection cn;
+
+    private static final String INSERT_REQUEST = "insert into items(name) values(?) returning id;";
+    private static final String UPDATE_REQUEST = "update items set name = ? where id = ?;";
+    private static final String DELETE_REQUEST = "delete from items where id = ?;";
+    private static final String FINDALL_REQUEST = "select * from items;";
+    private static final String FINDBYNAME_REQUEST = "select * from items where name like ?;";
+    private static final String FINDBYID_REQUEST = "select * from items where id = ?;";
+
+
 
     public void init() {
         try (InputStream in = SqlTracker.class.getClassLoader().getResourceAsStream("app.properties")) {
@@ -35,189 +44,103 @@ public class SqlTracker implements Store {
     }
 
     @Override
-    public Item add(Item item) throws Exception {
-        Connection conn = null;
-        PreparedStatement statement = null;
-        String SQL = "insert into items (name) values (?)";
-        try (SqlTracker sqlTracker = new SqlTracker()){
-            sqlTracker.init();
-            conn = sqlTracker.cn;
-            statement = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-            statement.setNString(1, item.getName());
-            ResultSet rs = statement.executeQuery();
-            rs.close();
-            statement.close();
-        } catch (SQLException e) {
-            Log.error(e.getMessage(), e);
-        }
-        finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    Log.error(e.getMessage(), e);
+    public Item add(Item item) {
+        LOG.debug("Insert data, name: {}", item.getName());
+            try (PreparedStatement ps = cn.prepareStatement(INSERT_REQUEST)) {
+                ps.setString(1, item.getName());
+                try (ResultSet result = ps.executeQuery()) {
+                    if (result.next()) {
+                        LOG.debug("Inserting complete");
+                        item.setId(String.valueOf(result.getInt(1)));
+                        LOG.debug("Generated id: {}", item.getId());
+                    } else {
+                        LOG.debug("Inserting is fallen");
+                    }
                 }
+            } catch (Exception e) {
+                LOG.debug("Something went wrong", e);
             }
-        }
-        return item;
+            return item;
     }
 
+
     @Override
-    public boolean replace(String id, Item item) throws Exception {
-        Connection conn = null;
-        PreparedStatement statement = null;
-        String SQL = "update items set name = ? where id = ?";
+    public boolean replace(String id, Item item) {
+        LOG.debug("Replace data, id {}, name: {}", id, item.getName());
         boolean rs = false;
-        int findId = Integer.parseInt(id);
-        try (SqlTracker sqlTracker = new SqlTracker()) {
-            sqlTracker.init();
-            conn = sqlTracker.cn;
-            statement.setNString(1, item.getName());
-            statement.setInt(2, findId);
-            statement = conn.prepareStatement(SQL);
-            statement.executeUpdate();
-            statement.close();
-            rs = true;
+        try (PreparedStatement ps = cn.prepareStatement(UPDATE_REQUEST)) {
+            ps.setNString(1, item.getName());
+            ps.setInt(2, Integer.parseInt(id));
+            rs = ps.executeUpdate() > 0;
+            LOG.debug("Replace complete. Result: {}", rs);
         } catch (SQLException e) {
-            Log.error(e.getMessage(), e);
+            LOG.error("Something goes wrong", e);
             rs = false;
-        }
-        finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    Log.error(e.getMessage(), e);
-                }
-            }
         }
         return rs;
     }
 
     @Override
-    public boolean delete(String id) throws Exception {
-        Connection conn = null;
-        PreparedStatement statement = null;
-        String SQL = "delete from items where id = ?";
+    public boolean delete(String id) {
+        LOG.debug("Delete data, id {}", id);
         boolean rs = false;
-        int findId = Integer.parseInt(id);
-        try (SqlTracker sqlTracker = new SqlTracker()) {
-            sqlTracker.init();
-            conn = sqlTracker.cn;
-            statement.setInt(1, findId);
-            statement = conn.prepareStatement(SQL);
-            statement.executeUpdate();
-            statement.close();
-            rs = true;
+        try (PreparedStatement ps = cn.prepareStatement(DELETE_REQUEST)) {
+            ps.setInt(1, Integer.parseInt(id));
+            rs = ps.executeUpdate() > 0;
+            LOG.debug("Delete complete. Result: {}", rs);
         } catch (SQLException e) {
-            Log.error(e.getMessage(), e);
+            LOG.error("Something goes wrong", e);
             rs = false;
-        }
-        finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    Log.error(e.getMessage(), e);
-                }
-            }
         }
         return rs;
     }
 
     @Override
-    public List<Item> findAll() throws Exception {
-        Connection conn = null;
-        PreparedStatement statement = null;
-        String SQL = "select name from items";
-        List<Item> item = null;
-        try (SqlTracker sqlTracker = new SqlTracker()) {
-            sqlTracker.init();
-            conn = sqlTracker.cn;
-            statement = conn.prepareStatement(SQL);
-            ResultSet rs = statement.executeQuery();
+    public List<Item> findAll() {
+        LOG.debug("Find all");
+        List<Item> items = null;
+        try (PreparedStatement ps = cn.prepareStatement(FINDALL_REQUEST)) {
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                item.add(new Item(rs.getString("name")));
+                items.add(new Item(String.valueOf(rs.getInt("id")), rs.getString("name")));
             }
-            rs.close();
-            statement.close();
+            LOG.debug("Selecting complete. Found items: {}", items.size());
         } catch (SQLException e) {
-            Log.error(e.getMessage(), e);
+            LOG.error("Something goes wrong", e);
         }
-        finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    Log.error(e.getMessage(), e);
-                }
-            }
-        }
-        return item;
+        return items;
     }
 
     @Override
     public List<Item> findByName(String key) throws Exception {
-        String findName = key;
-        Connection conn = null;
-        PreparedStatement statement = null;
-        String SQL = "SELECT name from items where name = ?";
-        List<Item> item = null;
-        try (SqlTracker sqlTracker = new SqlTracker()) {
-            sqlTracker.init();
-            conn = sqlTracker.cn;
-            statement = conn.prepareStatement(SQL);
-            statement.setNString(1, findName);
-            ResultSet rs = statement.executeQuery();
+        LOG.debug("Find by name {}", key);
+        List<Item> items = null;
+        try (PreparedStatement ps = cn.prepareStatement(FINDBYNAME_REQUEST)) {
+            ps.setNString(1, key);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                item.add(new Item(rs.getString("name")));
+                items.add(new Item(String.valueOf(rs.getInt("id")), rs.getString("name")));
             }
-            rs.close();
-            statement.close();
+            LOG.debug("Selecting complete. Found items: {}", items.size());
         } catch (SQLException e) {
-            Log.error(e.getMessage(), e);
+            LOG.error("Something goes wrong", e);
         }
-        finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    Log.error(e.getMessage(), e);
-                }
-            }
-        }
-        return item;
+        LOG.debug("Found {} items", items.size());
+        return items;
     }
 
     @Override
     public Item findById(String id) throws Exception {
-        int findId = Integer.parseInt(id);
-        Connection conn = null;
-        PreparedStatement statement = null;
-        String SQL = "SELECT name from items where id = ?";
+        LOG.debug("find by ID {}", id);
         Item item = null;
-        try (SqlTracker sqlTracker = new SqlTracker()) {
-            sqlTracker.init();
-            conn = sqlTracker.cn;
-            statement = conn.prepareStatement(SQL);
-            statement.setInt(1, findId);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                item = new Item(rs.getString("name"));
-            }
-            rs.close();
-            statement.close();
+        try (PreparedStatement ps = cn.prepareStatement(FINDBYID_REQUEST)) {
+            ps.setInt(1, Integer.parseInt(id));
+            ResultSet rs = ps.executeQuery();
+            item = new Item(String.valueOf(rs.getInt("id")), rs.getString("name"));
         } catch (SQLException e) {
-            Log.error(e.getMessage(), e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    Log.error(e.getMessage(), e);
-                }
-            }
+            LOG.error("Something goes wrong", e);
         }
+        LOG.debug("The item is found id {}, name {}", item.getId(), item.getName());
         return item;
     }
 }
