@@ -1,17 +1,19 @@
 package ru.job4j.tracker;
 
-import java.io.InputStream;
-import java.sql.*;
-import java.util.List;
-import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 public class SqlTracker implements Store {
-    private static final Logger LOG = LoggerFactory.getLogger(SqlTracker.class);
-    private Connection cn;
 
+    private static final Logger LOG = LoggerFactory.getLogger(SqlTracker.class.getName());
     private static final String INSERT_REQUEST = "insert into items(name) values(?) returning id;";
     private static final String UPDATE_REQUEST = "update items set name = ? where id = ?;";
     private static final String DELETE_REQUEST = "delete from items where id = ?;";
@@ -19,9 +21,61 @@ public class SqlTracker implements Store {
     private static final String FINDBYNAME_REQUEST = "select * from items where name like ?;";
     private static final String FINDBYID_REQUEST = "select * from items where id = ?;";
 
+    private Connection cn;
 
+    public SqlTracker() {
+
+    }
+
+    public SqlTracker(Connection cn) {
+        this.cn = cn;
+    }
 
     public void init() {
+        initConnection();
+        initTable();
+        initData();
+    }
+
+    private void initData() {
+        LOG.debug("Init data");
+        try {
+            LOG.debug("Reading init file");
+            List<String> requests = Files.readAllLines(Paths.get("./db/insert.sql"));
+            LOG.debug("Reading completed. Requests: {}", requests.size());
+            LOG.debug("Insert data");
+            try (Statement smt = cn.createStatement()) {
+                for (String request : requests) {
+                    smt.addBatch(request);
+                }
+                smt.executeBatch();
+            }
+            LOG.debug("Inserting completed");
+        } catch (Exception e) {
+            LOG.error("Something went wrong", e);
+        }
+    }
+
+    private void initTable() {
+        LOG.debug("Init table");
+        LOG.debug("Read create.sql");
+        try {
+            List<String> requests = Files.readAllLines(Path.of("./db/create.sql"));
+            LOG.debug("Reading completed");
+            LOG.debug("Requests: {}, {}", requests.get(0), requests.get(1));
+            LOG.debug("Try to execute requests ...");
+            try (Statement stmt = cn.createStatement()) {
+                LOG.debug("Execute: {}", requests.get(0));
+                stmt.execute(requests.get(0));
+                LOG.debug("Execute: {}", requests.get(1));
+                stmt.execute(requests.get(1));
+            }
+        } catch (Exception e) {
+            LOG.error("Something went wrong", e);
+        }
+    }
+
+    private void initConnection() {
         try (InputStream in = SqlTracker.class.getClassLoader().getResourceAsStream("app.properties")) {
             Properties config = new Properties();
             config.load(in);
@@ -46,101 +100,115 @@ public class SqlTracker implements Store {
     @Override
     public Item add(Item item) {
         LOG.debug("Insert data, name: {}", item.getName());
-            try (PreparedStatement ps = cn.prepareStatement(INSERT_REQUEST)) {
-                ps.setString(1, item.getName());
-                try (ResultSet result = ps.executeQuery()) {
-                    if (result.next()) {
-                        LOG.debug("Inserting complete");
-                        item.setId(String.valueOf(result.getInt(1)));
-                        LOG.debug("Generated id: {}", item.getId());
-                    } else {
-                        LOG.debug("Inserting is fallen");
-                    }
+        try (PreparedStatement ps = cn.prepareStatement(INSERT_REQUEST)) {
+            ps.setString(1, item.getName());
+            try (ResultSet result = ps.executeQuery()) {
+                if (result.next()) {
+                    LOG.debug("Inserting complete");
+                    item.setId(String.valueOf(result.getInt(1)));
+                    LOG.debug("Generated id: {}", item.getId());
+                } else {
+                    LOG.debug("Inserting is fallen");
                 }
-            } catch (Exception e) {
-                LOG.debug("Something went wrong", e);
             }
-            return item;
+        } catch (Exception e) {
+            LOG.debug("Something went wrong", e);
+        }
+        return item;
     }
-
 
     @Override
     public boolean replace(String id, Item item) {
-        LOG.debug("Replace data, id {}, name: {}", id, item.getName());
-        boolean rs = false;
+        LOG.debug("Replace item. id: {}, name: {}", id, item.getName());
+        boolean result = false;
         try (PreparedStatement ps = cn.prepareStatement(UPDATE_REQUEST)) {
-            ps.setNString(1, item.getName());
+            ps.setString(1, item.getName());
             ps.setInt(2, Integer.parseInt(id));
-            rs = ps.executeUpdate() > 0;
-            LOG.debug("Replace complete. Result: {}", rs);
-        } catch (SQLException e) {
-            LOG.error("Something goes wrong", e);
-            rs = false;
+            result = ps.executeUpdate() > 0;
+            LOG.debug("Replace complete. Result: {}", result);
+        } catch (Exception e) {
+            LOG.error("Something went wrong", e);
         }
-        return rs;
+        return result;
     }
 
     @Override
     public boolean delete(String id) {
-        LOG.debug("Delete data, id {}", id);
-        boolean rs = false;
+        LOG.debug("Delete item. id: {}", id);
+        boolean result = false;
         try (PreparedStatement ps = cn.prepareStatement(DELETE_REQUEST)) {
             ps.setInt(1, Integer.parseInt(id));
-            rs = ps.executeUpdate() > 0;
-            LOG.debug("Delete complete. Result: {}", rs);
-        } catch (SQLException e) {
-            LOG.error("Something goes wrong", e);
-            rs = false;
+            result = ps.executeUpdate() > 0;
+            LOG.debug("Deleting complete. Result: {}", result);
+        } catch (Exception e) {
+            LOG.error("Something went wrong", e);
         }
-        return rs;
+        return result;
     }
 
     @Override
     public List<Item> findAll() {
         LOG.debug("Find all");
-        List<Item> items = null;
+        List<Item> result = new ArrayList<>();
         try (PreparedStatement ps = cn.prepareStatement(FINDALL_REQUEST)) {
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                items.add(new Item(String.valueOf(rs.getInt("id")), rs.getString("name")));
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    result.add(new Item(
+                            String.valueOf(rs.getInt("id")),
+                            rs.getString("name")
+                    ));
+                }
             }
-            LOG.debug("Selecting complete. Found items: {}", items.size());
-        } catch (SQLException e) {
-            LOG.error("Something goes wrong", e);
+            LOG.debug("Selecting complete. Found items: {}", result.size());
+        } catch (Exception e) {
+            LOG.error("Something went wrong", e);
         }
-        return items;
+        LOG.debug("Found {} items", result.size());
+        return result;
     }
 
     @Override
-    public List<Item> findByName(String key) throws Exception {
+    public List<Item> findByName(String key) {
         LOG.debug("Find by name {}", key);
-        List<Item> items = null;
+        List<Item> result = new ArrayList<>();
         try (PreparedStatement ps = cn.prepareStatement(FINDBYNAME_REQUEST)) {
-            ps.setNString(1, key);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                items.add(new Item(String.valueOf(rs.getInt("id")), rs.getString("name")));
+            ps.setString(1, "%" + key + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    result.add(new Item(
+                            String.valueOf(rs.getInt("id")),
+                            rs.getString("name")
+                    ));
+                }
             }
-            LOG.debug("Selecting complete. Found items: {}", items.size());
-        } catch (SQLException e) {
-            LOG.error("Something goes wrong", e);
+            LOG.debug("Selecting complete. Found items: {}", result.size());
+        } catch (Exception e) {
+            LOG.error("Something went wrong", e);
         }
-        LOG.debug("Found {} items", items.size());
-        return items;
+        LOG.debug("Found {} items", result.size());
+        return result;
     }
 
     @Override
-    public Item findById(String id) throws Exception {
-        LOG.debug("find by ID {}", id);
-        Item item = null;
+    public Item findById(String id) {
+        LOG.debug("Find by id {}", id);
+        Item result = null;
         try (PreparedStatement ps = cn.prepareStatement(FINDBYID_REQUEST)) {
             ps.setInt(1, Integer.parseInt(id));
-            ResultSet rs = ps.executeQuery();
-            item = new Item(String.valueOf(rs.getInt("id")), rs.getString("name"));
-        } catch (SQLException e) {
-            LOG.error("Something goes wrong", e);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    result = new Item(
+                            String.valueOf(rs.getInt("id")),
+                            rs.getString("name")
+                    );
+                }
+            }
+            LOG.debug("Selecting complete. Found {}", result);
+        } catch (Exception e) {
+            LOG.error("Something went wrong", e);
         }
-        LOG.debug("The item is found id {}, name {}", item.getId(), item.getName());
-        return item;
+        LOG.debug("Found {}", result);
+        return result;
     }
+
 }
