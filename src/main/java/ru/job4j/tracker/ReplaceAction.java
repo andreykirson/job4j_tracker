@@ -8,7 +8,7 @@ public class ReplaceAction implements UserAction {
     }
 
     @Override
-    public boolean execute(Input input, Tracker tracker) {
+    public boolean execute(Input input, Store tracker) throws Exception {
         String id = input.askStr("Input id of item:");
         String name = input.askStr("Input the of item to edit name item:");
         Item repItem = new Item(name);

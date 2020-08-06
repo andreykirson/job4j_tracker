@@ -6,7 +6,7 @@ import java.util.*;
  * @version $Id$
  * @since 0.1
  */
-public class Tracker {
+public class MemTracker {
     /**
      * Массив для хранение заявок.
      */
