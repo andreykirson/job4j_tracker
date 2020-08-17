@@ -41,7 +41,7 @@ public class SqlTracker implements Store {
         LOG.debug("Init data");
         try {
             LOG.debug("Reading init file");
-            List<String> requests = Files.readAllLines(Paths.get("./db/insert.sql"));
+            List<String> requests = Files.readAllLines(Paths.get("ru/job4j/tracker/db/insert.sql"));
             LOG.debug("Reading completed. Requests: {}", requests.size());
             LOG.debug("Insert data");
             try (Statement smt = cn.createStatement()) {
@@ -60,7 +60,7 @@ public class SqlTracker implements Store {
         LOG.debug("Init table");
         LOG.debug("Read create.sql");
         try {
-            List<String> requests = Files.readAllLines(Path.of("./db/create.sql"));
+           List<String> requests = Files.readAllLines(Path.of("ru/job4j/tracker/db/create.sql"));
             LOG.debug("Reading completed");
             LOG.debug("Requests: {}, {}", requests.get(0), requests.get(1));
             LOG.debug("Try to execute requests ...");
