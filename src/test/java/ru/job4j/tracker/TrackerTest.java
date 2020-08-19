@@ -16,7 +16,7 @@ public class TrackerTest {
 
     @Test
     public void whenAddNewItemThenTrackerHasSameItem() {
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         Item item = new Item("test1");
         tracker.add(item);
         Item result = tracker.findById(item.getId());
@@ -25,30 +25,30 @@ public class TrackerTest {
 
     @Test
     public void findByName() {
-        Tracker tracker = new Tracker();
-        Item item_1 = new Item("test1");
-        Item item_2 = new Item("test2");
-        tracker.add(item_1);
-        tracker.add(item_2);
-        List<Item> result = tracker.findByName(item_1.getName());
-        assertThat(result.get(0).getName(), is(item_1.getName()));
+        MemTracker tracker = new MemTracker();
+        Item itemOne = new Item("test1");
+        Item itemTwo = new Item("test2");
+        tracker.add(itemOne);
+        tracker.add(itemOne);
+        List<Item> result = tracker.findByName(itemOne.getName());
+        assertThat(result.get(0).getName(), is(itemOne.getName()));
     }
 
     @Test
     public void findAll() {
-        Tracker tracker = new Tracker();
-        List <Item> result = new ArrayList<>();
-        Item item_1 = new Item("test1");
-        Item item_2 = new Item("test2");
-        tracker.add(item_1);
-        tracker.add(item_2);
+        MemTracker tracker = new MemTracker();
+        List<Item> result = new ArrayList<>();
+        Item itemOne = new Item("test1");
+        Item itemTwo = new Item("test2");
+        tracker.add(itemOne);
+        tracker.add(itemTwo);
         result = tracker.findAll();
-        assertThat(result.get(0).getName(), is(item_1.getName()));
+        assertThat(result.get(0).getName(), is(itemOne.getName()));
     }
 
     @Test
     public void replace() {
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         Item bug = new Item("Bug");
         tracker.add(bug);
         String id = bug.getId();
@@ -59,7 +59,7 @@ public class TrackerTest {
 
     @Test
     public void delete() {
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         Item bug = new Item("Bug");
         tracker.add(bug);
         String id = bug.getId();
@@ -70,15 +70,15 @@ public class TrackerTest {
 
     @Test
     public void sort() {
-        Tracker tracker = new Tracker();
-        Item item_1 = new Item("C");
-        Item item_2 = new Item("A");
-        Item item_3 = new Item("B");
-        Item item_4 = new Item("Y");
-        tracker.add(item_1);
-        tracker.add(item_2);
-        tracker.add(item_3);
-        tracker.add(item_4);
+        MemTracker tracker = new MemTracker();
+        Item itemOne = new Item("C");
+        Item itemTwo = new Item("A");
+        Item itemThree = new Item("B");
+        Item itemFour = new Item("Y");
+        tracker.add(itemOne);
+        tracker.add(itemTwo);
+        tracker.add(itemThree);
+        tracker.add(itemFour);
         tracker.sortByName();
         List<Item> actual = new ArrayList<>();
         actual = tracker.findAll();
@@ -92,16 +92,16 @@ public class TrackerTest {
     }
 
     @Test
-    public void ReverseSort() {
-        Tracker tracker = new Tracker();
-        Item item_1 = new Item("C");
-        Item item_2 = new Item("A");
-        Item item_3 = new Item("B");
-        Item item_4 = new Item("Y");
-        tracker.add(item_1);
-        tracker.add(item_2);
-        tracker.add(item_3);
-        tracker.add(item_4);
+    public void reverseSort() {
+        MemTracker tracker = new MemTracker();
+        Item itemOne = new Item("C");
+        Item itemTwo = new Item("A");
+        Item itemThree = new Item("B");
+        Item itemFour = new Item("Y");
+        tracker.add(itemOne);
+        tracker.add(itemTwo);
+        tracker.add(itemThree);
+        tracker.add(itemFour);
         tracker.itemReverseSortByName();
         List<Item> actual = new ArrayList<>();
         actual = tracker.findAll();
