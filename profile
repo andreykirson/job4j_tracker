@@ -1,10 +1,65 @@
-
-$ jps
+$ jps сначала нам нужно узнать pid нашего приложения в данном случае это 15160
 10260 RemoteMavenServer36
 13144 Launcher
 1368 Jps
 15160 AppMainV2
 5820
+
+Далее с помощью jmap, jstat, jstack, jconsole выводим статистику
+
+Инструмент jmap ( в новых версиях jdk нужно писать как jhsdb jmap --heap --pid 14388)
+
+$ jhsdb jmap --heap --pid 14388
+Attaching to process ID 14388, please wait...
+Debugger attached successfully.
+Server compiler detected.
+JVM version is 14.0.1+7 - версия виртуальной машины
+
+using thread-local object allocation.
+Garbage-First (G1) GC with 6 thread(s) - тип используемого коллектора
+
+Heap Configuration:
+   MinHeapFreeRatio         = 40 - минимальное доля свободного места в каждом поколение
+   MaxHeapFreeRatio         = 70 - максимальное доля свободного места в каждом поколение
+   MaxHeapSize              = 4273995776 (4076.0MB) максимальный размер кучи
+   NewSize                  = 1363144 (1.2999954223632812MB) - размер младшего поколения
+   MaxNewSize               = 2563768320 (2445.0MB)
+   OldSize                  = 5452592 (5.1999969482421875MB)
+   NewRatio                 = 2 - отношение размера старшего поколения к суммарному размеру регионов младшего поколения
+   SurvivorRatio            = 8 отношение выживших объектов
+   MetaspaceSize            = 21807104 (20.796875MB) - область памяти в JVM, предназначенная для хранения описания классов Java и некоторых дополнительных данных. По сравнению с PerGen может автоматически расширяться
+   CompressedClassSpaceSize = 1073741824 (1024.0MB) - (область сжатых указателей): используется для хранения информации о загруженных классах.
+   MaxMetaspaceSize         = 17592186044415 MB
+   G1HeapRegionSize         = 1048576 (1.0MB)
+
+Heap Usage:
+G1 Heap:
+   regions  = 4076
+   capacity = 4273995776 (4076.0MB) размер сборщика мусора
+   used     = 11534336 (11.0MB)
+   free     = 4262461440 (4065.0MB)
+   0.2698724239450442% used
+G1 Young Generation:
+Eden Space:
+   regions  = 10
+   capacity = 24117248 (23.0MB)
+   used     = 10485760 (10.0MB)
+   free     = 13631488 (13.0MB)
+   43.47826086956522% used
+Survivor Space:
+   regions  = 0
+   capacity = 0 (0.0MB)
+   used     = 0 (0.0MB)
+   free     = 0 (0.0MB)
+   0.0% used
+G1 Old Generation:
+   regions  = 1
+   capacity = 244318208 (233.0MB)
+   used     = 1048576 (1.0MB)
+   free     = 243269632 (232.0MB)
+   0.4291845493562232% used
+
+
 
 
 $ jstat -gc 15160
@@ -152,7 +207,7 @@ _java_thread_list=0x00000229ca2b6bd0, length=12, elements={
 JNI global refs: 14, weak refs: 0
 
 
-
+Инструмент jconsole
 
 VM Summary
 суббота, 29 августа 2020 г., 11:02:28 Владивосток, стандартное время
@@ -174,13 +229,20 @@ Current classes loaded:2 592
 Total classes loaded: 2 592
 Total classes unloaded:    0
 
+Данные о куче:
 
 Current heap size: 7 524 kbytes
 Maximum heap size: 4 173 824 kbytes
-Committed memory: 27 648 kbytes
+Committed memory: 27 648 kbytes - какое количество памяти должно быть выделено, но не обязательно использовано для heap-области процесса JVM на момент его старта
 Pending finalization: 0 objects
+
+Тип сборщика мусора:
+
 Garbage collector: Name = 'G1 Young Generation', Collections = 0, Total time spent = 0,000 seconds
 Garbage collector: Name = 'G1 Old Generation', Collections = 1, Total time spent = 0,008 seconds
+
+
+Данные о системе:
 
 Operating System: Windows 10 10.0
 Architecture: amd64
