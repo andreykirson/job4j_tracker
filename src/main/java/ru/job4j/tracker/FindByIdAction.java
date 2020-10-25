@@ -1,8 +1,18 @@
 package ru.job4j.tracker;
 
-import java.sql.SQLException;
+import java.io.ByteArrayOutputStream;
 
 public class FindByIdAction implements UserAction {
+
+    private ByteArrayOutputStream output;
+
+    public FindByIdAction() {
+    }
+
+    public FindByIdAction(ByteArrayOutputStream output) {
+        this.output = output;
+    }
+
     @Override
     public String name() {
         return "==== Searching item by Id ====";

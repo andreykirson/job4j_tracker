@@ -1,6 +1,17 @@
 package ru.job4j.tracker;
 
+import java.io.ByteArrayOutputStream;
+
 public class DeleteAction implements UserAction {
+
+    private ByteArrayOutputStream output;
+
+    public DeleteAction() {};
+
+    public DeleteAction(ByteArrayOutputStream output) {
+        this.output = output;
+    }
+
     @Override
     public String name() {
         return "==== Delete item ====";

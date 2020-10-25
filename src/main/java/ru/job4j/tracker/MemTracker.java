@@ -6,7 +6,7 @@ import java.util.*;
  * @version $Id$
  * @since 0.1
  */
-public class MemTracker {
+public class MemTracker implements Store{
     /**
      * Массив для хранение заявок.
      */
@@ -14,14 +14,18 @@ public class MemTracker {
     /**
      * Указатель ячейки для новой заявки.
      */
+
+
     /**
      * Метод реализующий добавление заявки в хранилище
      * @param item новая заявка
      */
-    public List<Item> add(Item item) {
+
+    @Override
+    public Item add(Item item) {
         item.setId(generateId());
         items.add(item);
-        return items;
+        return item;
     }
 
     public Item findById(String id) {
@@ -38,7 +42,7 @@ public class MemTracker {
      */
     private String generateId() {
         Random rm = new Random();
-        return String.valueOf(rm.nextLong() + System.currentTimeMillis());
+        return String.valueOf(rm.nextInt() + 10387264);
     }
 
     public List<Item> findByName(String key) {
@@ -68,6 +72,12 @@ public class MemTracker {
         return rsl;
     }
 
+    @Override
+    public void init() {
+
+    }
+
+
     public boolean replace(String id, Item repItem) {
         int index = indexOf(id);
         boolean rsl = index != -1;
@@ -95,5 +105,16 @@ public class MemTracker {
         Collections.sort(items, new ItemReverseSortByName());
     }
 
+    @Override
+    public void close() throws Exception {
+
+    }
+
+
+    public static void main(String[] args) {
+        MemTracker tracker = new MemTracker();
+        tracker.add(new Item("Replaced item"));
+        System.out.println(tracker.findAll());
+    }
 }
 

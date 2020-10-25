@@ -1,8 +1,19 @@
 package ru.job4j.tracker;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
-public class FindbyNameAction implements UserAction {
+public class FindByNameAction implements UserAction {
+
+    private ByteArrayOutputStream output;
+
+    public FindByNameAction() {
+    }
+
+    public FindByNameAction(ByteArrayOutputStream output) {
+        this.output = output;
+    }
+
     @Override
     public String name() {
         return "==== Searching items by name ====";
