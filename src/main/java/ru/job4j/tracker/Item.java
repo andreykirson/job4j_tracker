@@ -8,7 +8,7 @@ import javax.persistence.*;
 public class Item implements Comparable<Item> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Integer id;
     private String name;
 
 
@@ -16,7 +16,7 @@ public class Item implements Comparable<Item> {
         this.name = name;
     }
 
-    public Item(String id, String name) {
+    public Item(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -25,11 +25,11 @@ public class Item implements Comparable<Item> {
 
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

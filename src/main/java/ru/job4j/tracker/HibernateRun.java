@@ -54,7 +54,7 @@ public class HibernateRun {
         Session session = sf.openSession();
         session.beginTransaction();
         Item item = new Item(null);
-        item.setId(String.valueOf(id));
+        item.setId(id);
         session.delete(item);
         session.getTransaction().commit();
         session.close();
@@ -69,7 +69,7 @@ public class HibernateRun {
         return result;
     }
 
-    public static Item findById(String id, SessionFactory sf) {
+    public static Item findById(Integer id, SessionFactory sf) {
         Session session = sf.openSession();
         session.beginTransaction();
         Item result = session.get(Item.class, id);

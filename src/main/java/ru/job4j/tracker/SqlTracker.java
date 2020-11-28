@@ -105,7 +105,7 @@ public class SqlTracker implements Store {
             try (ResultSet result = ps.executeQuery()) {
                 if (result.next()) {
                     LOG.debug("Inserting complete");
-                    item.setId(String.valueOf(result.getInt(1)));
+                    item.setId((result.getInt(1)));
                     LOG.debug("Generated id: {}", item.getId());
                 } else {
                     LOG.debug("Inserting is fallen");
@@ -154,7 +154,7 @@ public class SqlTracker implements Store {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     result.add(new Item(
-                            String.valueOf(rs.getInt("id")),
+                            rs.getInt("id"),
                             rs.getString("name")
                     ));
                 }
@@ -176,7 +176,7 @@ public class SqlTracker implements Store {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     result.add(new Item(
-                            String.valueOf(rs.getInt("id")),
+                            rs.getInt("id"),
                             rs.getString("name")
                     ));
                 }
@@ -198,7 +198,7 @@ public class SqlTracker implements Store {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     result = new Item(
-                            String.valueOf(rs.getInt("id")),
+                            rs.getInt("id"),
                             rs.getString("name")
                     );
                 }

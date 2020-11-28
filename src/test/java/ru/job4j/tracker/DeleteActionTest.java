@@ -23,7 +23,7 @@ public class DeleteActionTest {
         DeleteAction del = new DeleteAction(out);
         List<Item> items = tracker.findByName("Delete item");
         Input input = mock(Input.class);
-        String id = items.get(0).getId();
+        String id = String.valueOf(items.get(0).getId());
         when(input.askStr(any(String.class))).thenReturn(id);
         del.execute(input, tracker);
         String ln = System.lineSeparator();

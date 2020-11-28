@@ -19,7 +19,7 @@ public class TrackerTest {
         MemTracker tracker = new MemTracker();
         Item item = new Item("test1");
         tracker.add(item);
-        Item result = tracker.findById(item.getId());
+        Item result = tracker.findById(String.valueOf(item.getId()));
         assertThat(result.getName(), is(item.getName()));
     }
 
@@ -51,7 +51,7 @@ public class TrackerTest {
         MemTracker tracker = new MemTracker();
         Item bug = new Item("Bug");
         tracker.add(bug);
-        String id = bug.getId();
+        String id = String.valueOf(bug.getId());
         Item bugWithDesc = new Item("Bug with description");
         tracker.replace(id, bugWithDesc);
         assertThat(tracker.findById(id).getName(), is("Bug with description"));
@@ -62,7 +62,7 @@ public class TrackerTest {
         MemTracker tracker = new MemTracker();
         Item bug = new Item("Bug");
         tracker.add(bug);
-        String id = bug.getId();
+        String id = String.valueOf(bug.getId());
         tracker.delete(id);
         assertThat(tracker.findById(id), is(nullValue()));
     }

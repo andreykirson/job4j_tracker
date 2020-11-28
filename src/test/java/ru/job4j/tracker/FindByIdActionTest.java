@@ -24,7 +24,7 @@ class FindByIdActionTest {
         FindByIdAction find = new FindByIdAction(out);
         List<Item> items = tracker.findAll();
         Input input = mock(Input.class);
-        String id = items.get(0).getId();
+        String id = String.valueOf(items.get(0).getId());
         when(input.askStr(any(String.class))).thenReturn(id);
         find.execute(input, tracker);
         String ln = System.lineSeparator();

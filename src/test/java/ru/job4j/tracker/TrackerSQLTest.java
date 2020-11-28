@@ -43,8 +43,8 @@ public class TrackerSQLTest {
         try (SqlTracker tracker = new SqlTracker(ConnectionRollback.create(this.init()))) {
             Item item = new Item("desc");
             tracker.add(item);
-            tracker.replace(item.getId(), new Item("replaced"));
-            assertThat(tracker.findById(item.getId()).getName(), is("replaced"));
+            tracker.replace(String.valueOf(item.getId()), new Item("replaced"));
+            assertThat(tracker.findById(String.valueOf(item.getId())).getName(), is("replaced"));
         }
     }
 
@@ -53,7 +53,7 @@ public class TrackerSQLTest {
         try (SqlTracker tracker = new SqlTracker(ConnectionRollback.create(this.init()))) {
             Item item = new Item("desc");
             tracker.add(item);
-            tracker.delete(item.getId());
+            tracker.delete(String.valueOf(item.getId()));
             assertThat(tracker.findByName("desc").size(), is(0));
         }
     }
@@ -61,9 +61,9 @@ public class TrackerSQLTest {
     @Test
     public void findAll() throws Exception {
         try (SqlTracker tracker = new SqlTracker(ConnectionRollback.create(this.init()))) {
-            tracker.add(new Item("1", "desc-1"));
-            tracker.add(new Item("2", "desc-2"));
-            tracker.add(new Item("3", "desc-3"));
+            tracker.add(new Item(Integer.parseInt("1"), "desc-1"));
+            tracker.add(new Item(Integer.parseInt("2"), "desc-2"));
+            tracker.add(new Item(Integer.parseInt("3"), "desc-3"));
             assertThat(tracker.findAll().size(), is(3));
         }
     }
@@ -71,7 +71,7 @@ public class TrackerSQLTest {
     @Test
     public void findByName() throws Exception {
         try (SqlTracker tracker = new SqlTracker(ConnectionRollback.create(this.init()))) {
-            tracker.add(new Item("1", "desc-1"));
+            tracker.add(new Item(Integer.parseInt("1"), "desc-1"));
             assertThat(tracker.findByName("desc-1").size(), is(1));
         }
     }
@@ -81,7 +81,7 @@ public class TrackerSQLTest {
         try (SqlTracker tracker = new SqlTracker(ConnectionRollback.create(this.init()))) {
             Item item = new Item("desc");
             tracker.add(item);
-            assertThat(tracker.findById(item.getId()).getName(), is("desc"));
+            assertThat(tracker.findById( String.valueOf(item.getId())).getName(), is("desc"));
         }
     }
 

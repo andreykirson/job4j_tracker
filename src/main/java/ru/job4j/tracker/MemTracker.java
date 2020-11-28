@@ -23,7 +23,7 @@ public class MemTracker implements Store{
 
     @Override
     public Item add(Item item) {
-        item.setId(generateId());
+        item.setId(Integer.valueOf(generateId()));
         items.add(item);
         return item;
     }
@@ -82,7 +82,7 @@ public class MemTracker implements Store{
         int index = indexOf(id);
         boolean rsl = index != -1;
         if (rsl) {
-            repItem.setId(id);
+            repItem.setId(Integer.valueOf(id));
             items.set(index, repItem);
         }
         return rsl;

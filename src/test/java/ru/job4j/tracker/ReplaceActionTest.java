@@ -23,7 +23,7 @@ public class ReplaceActionTest {
         ReplaceAction rep = new ReplaceAction(out);
         List<Item> items = tracker.findByName("Old name");
         Input input = mock(Input.class);
-        String id = items.get(0).getId();
+        String id = String.valueOf(items.get(0).getId());
         when(input.askInt(any(String.class))).thenReturn(Integer.valueOf(id));
         when(input.askStr(any(String.class))).thenReturn(replacedName);
         rep.execute(input, tracker);
