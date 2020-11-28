@@ -59,7 +59,7 @@ public class JobTest {
 
 
     @Test
-    public void PrintResult() {
+    public void printResult() {
         List<Job> jobs = Arrays.asList(
                 new Job("A", 2),
                 new Job("A", 4),

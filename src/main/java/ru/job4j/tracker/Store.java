@@ -11,5 +11,4 @@ public interface Store extends AutoCloseable {
     List<Item> findAll() throws Exception;
     List<Item> findByName(String key) throws Exception;
     Item findById(String id) throws Exception;
-
 }

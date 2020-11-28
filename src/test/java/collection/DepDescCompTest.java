@@ -11,7 +11,7 @@ public class DepDescCompTest {
 
     @Test
     public void comparePrintResult() {
-        List<String> input = Arrays.asList( "K1",
+        List<String> input = Arrays.asList("K1",
                 "K1/SK1", "K1/SK2", "K2",
                 "K2/SK1",
                 "K2/SK1/SSK1",

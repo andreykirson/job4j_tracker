@@ -1,5 +1,4 @@
 package ru.job4j.tracker;
-import java.sql.*;
 
 public class StartUI {
 
@@ -27,7 +26,12 @@ public class StartUI {
         try (Store tracker = new SqlTracker()) {
             tracker.init();
             UserAction[] actions = {
-                    new CreateAction()
+                    new CreateAction(),
+                    new FindAllAction(),
+                    new FindByNameAction(),
+                    new DeleteAction(),
+                    new FindByIdAction(),
+                    new ExitAction()
             };
             new StartUI().init(validate, tracker, actions);
         } catch (Exception e) {
