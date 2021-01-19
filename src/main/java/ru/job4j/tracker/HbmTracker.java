@@ -112,4 +112,15 @@ public class HbmTracker implements Store, AutoCloseable {
     public void close() throws Exception {
         StandardServiceRegistryBuilder.destroy(registry);
     }
+
+    public void deleteAll() {
+        Session session = sf.openSession();
+        session.beginTransaction();
+        List<Item> instances = session.createCriteria(Item.class).list();
+        for (Object obj : instances) {
+            session.delete(obj);
+        }
+        session.getTransaction().commit();
+        session.close();
+    }
 }

@@ -7,8 +7,9 @@ import static org.junit.Assert.*;
 public class HbmTrackerTest {
 
     @Test
-    public void add() throws Exception {
-        Store store = new HbmTracker();
+    public void add() {
+        HbmTracker store = new HbmTracker();
+        store.deleteAll();
         Item item = new Item("Fix bag");
         store.add(item);
         List<Item> all = store.findByName("Fix bag");
@@ -16,33 +17,36 @@ public class HbmTrackerTest {
     }
 
     @Test
-    public void replace() throws Exception {
-        Store store = new HbmTracker();
+    public void replace() {
+        HbmTracker store = new HbmTracker();
         Item oldItem = new Item("Fix bag");
         store.add(oldItem);
         Item newItem = new Item("Create feature");
-        store.replace("1", newItem);
+        store.replace(String.valueOf(oldItem.getId()), newItem);
         List<Item> all = store.findByName("Create feature");
         assertEquals("Create feature", all.get(0).getName());
     }
 
     @Test
-    public void delete() throws Exception {
-        Store store = new HbmTracker();
+    public void delete() {
+        HbmTracker store = new HbmTracker();
+        store.deleteAll();
         Item item = new Item("Fix bag");
         store.add(item);
-        store.delete("2");
+        store.delete(String.valueOf(item.getId()));
         List<Item> all = store.findAll();
-        assertEquals(3, all.size());
+        System.out.println(all);
+        assertEquals(0, all.size());
     }
 
     @Test
-    public void findAll() throws Exception {
-        Store store = new HbmTracker();
+    public void findAll() {
+        HbmTracker store = new HbmTracker();
+        store.deleteAll();
         Item item = new Item("Fix bag");
         store.add(item);
         List<Item> all = store.findAll();
-        assertEquals(12, all.size());
+        assertEquals(1, all.size());
     }
 
     @Test
@@ -51,6 +55,7 @@ public class HbmTrackerTest {
         Item item = new Item("Fix bag");
         store.add(item);
         List<Item> all = store.findByName("Fix bag");
+        store.close();
         assertEquals("Fix bag", all.get(0).getName());
     }
 
@@ -58,9 +63,9 @@ public class HbmTrackerTest {
     public void findById() throws Exception {
         Store store = new HbmTracker();
         Item item = new Item("Fix bag");
-        System.out.println(store.findAll());
         store.add(item);
-        Item rsl = store.findById("4");
+        Item rsl =  store.findById(String.valueOf(item.getId()));
         assertEquals("Fix bag", rsl.getName());
     }
+
 }
