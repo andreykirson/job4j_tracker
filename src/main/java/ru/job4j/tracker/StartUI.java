@@ -1,18 +1,8 @@
 package ru.job4j.tracker;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.stereotype.Component;
-
-@Component
 public class StartUI {
 
-    private ConsoleInput input;
-
-    public StartUI(ConsoleInput input) {
-        this.input = input;
-    }
-
-    public void init(Store store, UserAction[] actions) throws Exception {
+ public void init(Input input, Store store, UserAction[] actions) throws Exception {
         boolean run = true;
         while (run) {
             this.showMenu(actions);
@@ -30,10 +20,9 @@ public class StartUI {
     }
 
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.scan("ru.job4j.tracker");
-        context.refresh();
-        StartUI ui = context.getBean(StartUI.class);
+        Input validate = new ValidateInput(
+                new ConsoleInput()
+        );
         try (Store tracker = new SqlTracker()) {
             tracker.init();
             UserAction[] actions = {
@@ -44,7 +33,7 @@ public class StartUI {
                     new FindByIdAction(),
                     new ExitAction()
             };
-            ui.init(tracker, actions);
+            new StartUI().init(validate, tracker, actions);
         } catch (Exception e) {
             e.printStackTrace();
         }
