@@ -2,7 +2,13 @@ package ru.job4j.tracker;
 
 public class StartUI {
 
-    public void init(Input input, Store store, UserAction[] actions) throws Exception {
+    private ConsoleInput input;
+
+    public StartUI(ConsoleInput input) {
+        this.input = input;
+    }
+
+    public void init(Store store, UserAction[] actions) throws Exception {
         boolean run = true;
         while (run) {
             this.showMenu(actions);
@@ -12,6 +18,8 @@ public class StartUI {
         }
     }
 
+
+
     private void showMenu(UserAction[] actions) {
         System.out.println("Menu.");
         for (int index = 0; index < actions.length; index++) {
@@ -20,9 +28,12 @@ public class StartUI {
     }
 
     public static void main(String[] args) {
-        Input validate = new ValidateInput(
-                new ConsoleInput()
-        );
+
+        Context context = new Context();
+        context.reg(ConsoleInput.class);
+        context.reg(StartUI.class);
+        StartUI ui = context.get(StartUI.class);
+
         try (Store tracker = new SqlTracker()) {
             tracker.init();
             UserAction[] actions = {
@@ -33,7 +44,7 @@ public class StartUI {
                     new FindByIdAction(),
                     new ExitAction()
             };
-            new StartUI().init(validate, tracker, actions);
+            ui.init(tracker, actions);
         } catch (Exception e) {
             e.printStackTrace();
         }
