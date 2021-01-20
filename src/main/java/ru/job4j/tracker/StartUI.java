@@ -1,7 +1,9 @@
 package ru.job4j.tracker;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Component;
 
+@Component
 public class StartUI {
 
     private ConsoleInput input;
@@ -29,11 +31,9 @@ public class StartUI {
 
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.register(ConsoleInput.class);
-        context.register(StartUI.class);
+        context.scan("ru.job4j.tracker");
         context.refresh();
         StartUI ui = context.getBean(StartUI.class);
-
         try (Store tracker = new SqlTracker()) {
             tracker.init();
             UserAction[] actions = {
