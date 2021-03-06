@@ -10,23 +10,6 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public class HibernateRun {
-    public static void main(String[] args) {
-        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-                .configure().build();
-        try {
-            SessionFactory sf = new MetadataSources(registry).buildMetadata().buildSessionFactory();
-            Item item = create(new Item("Learn Hibernate_3", "Do Task Two", new Timestamp(System.currentTimeMillis())), sf);
-            System.out.println(item);
-            List<Item> list = findAll(sf);
-            for (Item it : list) {
-                System.out.println(it);
-            }
-        }  catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            StandardServiceRegistryBuilder.destroy(registry);
-        }
-    }
 
     public static Item create(Item item, SessionFactory sf) {
         Session session = sf.openSession();
@@ -72,4 +55,6 @@ public class HibernateRun {
         session.close();
         return result;
     }
+
+
 }

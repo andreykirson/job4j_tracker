@@ -167,6 +167,27 @@ public class SqlTracker implements Store {
         return result;
     }
 
+
+    @Override
+    public List<Item> findAllByReact(Observe<Item> observe) {
+        LOG.debug("Find all by react");
+        List<Item> result = new ArrayList<>();
+        try (PreparedStatement ps = cn.prepareStatement(FINDALL_REQUEST)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Item item = new Item(rs.getInt("id"), rs.getString("name"));
+                    observe.receive(item);
+                    result.add(item);
+                }
+            }
+            LOG.debug("Selecting complete. Found items: {}", result.size());
+        } catch (Exception e) {
+            LOG.error("Something went wrong", e);
+        }
+        LOG.debug("Found {} items", result.size());
+        return result;
+    }
+
     @Override
     public List<Item> findByName(String key) {
         LOG.debug("Find by name {}", key);
@@ -210,6 +231,9 @@ public class SqlTracker implements Store {
         LOG.debug("Found {}", result);
         return result;
     }
+
+
+
 }
 
 
