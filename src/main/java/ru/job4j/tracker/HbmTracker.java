@@ -10,6 +10,8 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Iterator;
 import java.util.List;
 
 public class HbmTracker implements Store, AutoCloseable {
@@ -103,6 +105,22 @@ public class HbmTracker implements Store, AutoCloseable {
         Session session = sf.openSession();
         session.beginTransaction();
         Item result = session.get(Item.class, Integer.parseInt(id));
+        session.getTransaction().commit();
+        session.close();
+        return result;
+    }
+
+    @Override
+    public List<Item> findAllByReact(Observe<Item> observe) throws Exception {
+        Session session = sf.openSession();
+        session.beginTransaction();
+        List result = session.createQuery("from ru.job4j.tracker.Item").list();
+        Iterator it = result.iterator();
+        while (it.hasNext()) {
+            int i = 0;
+            observe.receive((Item) result.get(i));
+            i++;
+        }
         session.getTransaction().commit();
         session.close();
         return result;
