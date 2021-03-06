@@ -29,10 +29,13 @@ public class MemTracker implements Store{
     }
 
     public Item findById(String id) {
-        // Находим индекс
         int index = indexOf(id);
-        // Если индекс найден возвращаем item, иначе null
         return index != -1 ? items.get(index) : null;
+    }
+
+    @Override
+    public List<Item> findAllByReact(Observe<Item> observe) throws Exception {
+        return null;
     }
 
     /**
