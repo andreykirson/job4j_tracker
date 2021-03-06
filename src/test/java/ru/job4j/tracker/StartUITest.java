@@ -5,6 +5,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+
+import java.sql.Timestamp;
 import java.util.StringJoiner;
 
 public class StartUITest {
@@ -34,11 +36,11 @@ public class StartUITest {
         System.setOut(new PrintStream(out));
         MemTracker tracker = new MemTracker();
         FindAllAction act = new FindAllAction();
-        Item item = new Item("test1");
+        Item item = new Item("test1", "new bag", new Timestamp(System.currentTimeMillis()));
         tracker.add(item);
         act.execute(new StubInput(new String[] {}), tracker);
         String expect = new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
-                .add("Item{id = " + item.getId() +"', name = " + "'" + item.getName() + "'}")
+                .add("Item{id=" + item.getId() +", name=" + "'" + item.getName()  + "', description='"  + item.getDescription() + "'" + ", created="+item.getCreated() + "}" )
                 .toString();
         assertThat(new String(out.toByteArray()), is(expect));
         System.setOut(def);
@@ -51,11 +53,11 @@ public class StartUITest {
         System.setOut(new PrintStream(out));
         MemTracker tracker = new MemTracker();
         FindByNameAction act = new FindByNameAction();
-        Item item = new Item("testFind");
+        Item item = new Item("testFind", "new bag", new Timestamp(System.currentTimeMillis()));
         tracker.add(item);
         act.execute(new StubInput(new String[] {"testFind"}), tracker);
         String expect = new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
-                .add("Item{id = " + item.getId() +"', name = " + "'" + item.getName() + "'}")
+                .add("Item{id=" + item.getId() +", name=" + "'" + item.getName()  + "', description='"  + item.getDescription() + "'" + ", created="+item.getCreated() + "}" )
                 .toString();
         assertThat(new String(out.toByteArray()), is(expect));
         System.setOut(def);

@@ -50,6 +50,15 @@ public class Item implements Comparable<Item> {
         this.name = name;
     }
 
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Timestamp getCreated() {
+        return created;
+    }
+
     @Override
     public String toString() {
         return "Item{" +

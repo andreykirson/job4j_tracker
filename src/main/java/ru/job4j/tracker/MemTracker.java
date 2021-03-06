@@ -66,7 +66,8 @@ public class MemTracker implements Store{
         int rsl = -1;
         int index = 0;
         for (Item item:items) {
-             if (item.getId().equals(id)) {
+            String itemId = String.valueOf(item.getId());
+             if (itemId.equals(id)) {
                  rsl = index;
                  break;
             }

@@ -17,8 +17,7 @@ public class TrackerTest {
     @Test
     public void whenAddNewItemThenTrackerHasSameItem() {
         MemTracker tracker = new MemTracker();
-        Item item = new Item("test1");
-        tracker.add(item);
+        Item item = tracker.add(new Item("test1")) ;
         Item result = tracker.findById(String.valueOf(item.getId()));
         assertThat(result.getName(), is(item.getName()));
     }

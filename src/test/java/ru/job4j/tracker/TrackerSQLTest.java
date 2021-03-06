@@ -61,7 +61,7 @@ public class TrackerSQLTest {
             tracker.add(new Item(Integer.parseInt("1"), "desc-1"));
             tracker.add(new Item(Integer.parseInt("2"), "desc-2"));
             tracker.add(new Item(Integer.parseInt("3"), "desc-3"));
-            assertThat(tracker.findAll().size(), is(3));
+            assertThat(tracker.findAll().size(), is(5));
         }
     }
 
